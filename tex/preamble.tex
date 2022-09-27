@@ -1,0 +1,286 @@
+\documentclass[11pt]{article}
+\usepackage{etex} %%extra floats for no enought \dimen error!!
+\reserveinserts{29}
+%\usepackage{stata}
+\usepackage[left=1.25in, right=1.25in,top=1in,bottom=1.1in]{geometry}
+%pstricks invoked by stata needs this to run pdflatex but this breaks pdfpages!!!!!!
+%\usepackage{auto-pst-pdf}
+\usepackage[final]{pdfpages}
+\usepackage{graphicx, makeidx, latexsym, longtable, fancyhdr, natbib, wrapfig, setspace, moresize, wallpaper,mathcomp,pifont,tikz,lastpage,fix-cm,sparklines, dcolumn}
+\usepackage{enumerate,enumitem, listings}
+\usepackage{rotating}
+\usepackage{color}
+\usepackage{multicol, subfigure}
+\usepackage[fixed]{fontawesome5}
+\pdfminorversion=5
+\pdfobjcompresslevel=3
+\pdfcompresslevel=9
+\setlength{\columnsep}{0pt}
+\definecolor{gs15}{gray}{0.9}
+\definecolor{lightgray}{rgb}{0.40,0.40,0.40}
+\definecolor{midred}{rgb}{0.69,0.00,0.00} \definecolor{brown}{rgb}{0.35,0.00,0.00}
+\definecolor{darkgrey}{rgb}{0.25,0.25,0.25} \definecolor{grey}{rgb}{0.40,0.40,0.40}
+\definecolor{midgreen}{rgb}{0.0,0.55,0.0} \definecolor{cyan}{rgb}{0.24,0.16,0.16}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.4} %darkblue
+\definecolor{Gray}{rgb}{0.07,0.42,0.98}
+\definecolor{lightblue}{RGB}{30,166,225}
+\definecolor{mustard}{RGB}{200, 174, 71}
+\definecolor{cyan(process)}{rgb}{0.0, 0.72, 0.92}
+\definecolor{orange2}{RGB}{255,69,0}  %255,140,0 less red version
+\definecolor{mygreen}{RGB}{11,64,97}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.96}
+%\definecolor{cousteau@shipgrey}{RGB}{44, 62, 80}
+\definecolor{skyblue}{RGB}{236, 240, 241}
+\definecolor{capred}{RGB}{231, 76, 60}
+\definecolor{orange}{RGB}{226, 117, 32}
+\definecolor{white}{RGB}{255, 255, 255}
+\definecolor{uscgrey}{RGB}{118, 118, 118} %USC grey
+\definecolor{uscred}{RGB}{153,27,30} %USC red
+\definecolor{uscgold}{RGB}{255, 204, 0} %Gibson Dark Green-Blue Navy
+\usepackage{xcolor,colortbl}
+%%captions and figures%%
+\usepackage[format=hang,labelfont={bf,up,footnotesize},textfont=up,skip=.1cm,margin=.1cm,singlelinecheck=false,justification=justified,font={color=lightgray,footnotesize}]{caption}
+\DeclareCaptionFont{lightgray}{\color{lightgray}}
+\captionsetup{labelfont+=lightgray}
+\usepackage{float}
+\usepackage[bottom]{footmisc}
+\usepackage[right]{lineno}
+\setlength{\intextsep}{2mm} %%sets space betw. fig. and following text
+\setlength{\columnsep}{1.5cm}
+\setlength{\columnseprule}{.005cm}
+%%hyperref
+\usepackage{hyperref}
+\hypersetup{
+bookmarks=true,         % show bookmarks bar?
+unicode=false,          % non-Latin characters in AcrobatÕs bookmarks
+pdftoolbar=false,        % show AcrobatÕs toolbar?
+pdfmenubar=true,        % show AcrobatÕs menu?
+pdffitwindow=true,     % window fit to page when opened
+pdfstartview={FitH},    % fits the width of the page to the window
+pdftitle={GibsonReport},    % title
+pdfauthor={EAB},     % author
+pdfsubject={AISD},   % subject of the document
+pdfcreator={EAB},   % creator of the document
+pdfproducer={EAB}, % producer of the document
+pdfkeywords={Gibson,Report}, % list of keywords
+pdfnewwindow=true,      % links in new PDF window
+colorlinks=true,       % false: boxed links; true: colored links
+linkcolor= cyan,          % color of internal links (change box color with linkbordercolor)
+citecolor= black,        % color of links to bibliography
+filecolor= cyan,      % color of file links
+urlcolor=uscred,          % color of external links
+breaklinks=true
+}
+
+\usepackage{tabularx, booktabs}
+\usepackage[color=uscgrey, colorinlistoftodos]{todonotes}
+\newcommand{\tab}{\hspace*{2em}}
+%\setcounter{secnumdepth}{-1}
+%\setlength\LTleft{12pt} %longtable margin from left
+%\setlength\LTright{2pt} %longtable move riht
+\setlength{\parindent}{0pt}
+
+% modify section headers with sectsty package
+%\usepackage{sectsty}
+%\sectionfont{\color{darkblue}\huge\raggedright\sectionrule{0ex}{0pt}{-1.25ex}{4.33pt}} %creates hrule under section header
+%\subsectionfont{\color{darkblue}\normalsize}
+%\paragraphfont{\noindent\color{darkblue}}
+
+
+%\ThisCenterWallPaper{.22}{logo1}
+%\setlength{\wpYoffset}{4.7in}
+%\setlength{\wpXoffset}{2.8in}
+
+%\usepackage{cmbright}
+%\usepackage{lmodern}
+%\usepackage{futura}
+% \usepackage{charter}
+%futura with luatex only!!
+%\usepackage{fontspec}
+% \setmainfont{charter}[ItalicFont={Futura Medium Italic}]
+\usepackage{charter}
+\renewcommand{\sfdefault}{lmodern}
+
+%framed boxes
+\usepackage[framemethod=tikz]{mdframed}
+\usetikzlibrary{shadows}
+
+\mdfdefinestyle{mystyle}{%
+innerlinewidth = 0.5pt,
+outerlinewidth = 2pt,
+linecolor = uscgrey,
+tikzsetting = {draw = white, line width = 0.6pt},
+roundcorner=15pt,
+linecolor=mygreen,
+linewidth=2pt,
+topline=true,
+frametitleaboveskip=1.5\dimexpr-\ht\strutbox\relax,
+}
+
+\newenvironment{definition}[1][]{%
+\ifstrempty{#1}%
+{\mdfsetup{%
+style = mystyle,
+}}%
+{\mdfsetup{%
+style = mystyle,
+frametitle={%
+\tikz{[baseline=(current bounding box.east),outer sep=0pt]
+\node[draw = white, line width = 2pt, text = white, anchor=east,rectangle,
+fill=mygreen, rounded corners, drop shadow]
+{\strut #1};
+}}}}%
+\begin{mdframed}[]\relax%
+}{\end{mdframed}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE PAGE SETUP
+
+%----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+%%more packages go here
+%----------------------------------------------------------------------------------------
+%----------------------------------------------------------------------------------------
+
+%%halmos / qed symbol%%
+\usepackage{amsthm}
+\usepackage{marvosym}
+
+\newcommand\BoldSquare{%
+\setlength\fboxrule{1.1pt}\setlength\fboxsep{.5pt}\fbox{\phantom{\rule{5pt}{5pt}}}}
+%%uncomment to change the Halmos symbol triggered by QED
+%\renewcommand\qedsymbol{\Squarepipe}
+%\renewcommand\qedsymbol{\BoldSquare}
+
+\usepackage{lettrine}
+
+\renewcommand{\labelitemi}{\textcolor{uscgrey}{{\scriptsize{\HexaSteel}}}}
+
+%myqed  -- same as above but doesnt move to end of line like halmos%
+%\newcommand{\myqed}{\rule{5pt}{5pt}}
+\newcommand{\myqed}{\setlength\fboxrule{.5pt}\setlength\fboxsep{.5pt}\fbox{\phantom{\rule{3pt}{3pt}}}}
+%also mine is smaller and thinner, more obscure
+
+\newcommand{\newlbc}{
+\begin{tikzpicture}
+\filldraw[fill=uscgrey,draw=darkblue] circle (3pt);
+\end{tikzpicture}
+}
+\newcommand{\newbc}{
+\begin{tikzpicture}
+\filldraw[fill=blue,draw=darkblue] circle (3pt);
+\end{tikzpicture}
+}
+\newcommand{\newdbc}{
+\begin{tikzpicture}
+\filldraw[fill=darkblue,draw=darkblue] circle (3pt);
+\end{tikzpicture}
+}
+\newcommand{\newrc}{
+\begin{tikzpicture}
+\filldraw[fill=red,draw=red] circle (3pt);
+\end{tikzpicture}
+}
+\newcommand{\newdbca}{
+\begin{tikzpicture}
+\filldraw[fill=darkblue,draw=darkblue] circle (1.5pt);
+\end{tikzpicture}
+}
+\newcommand{\newdbcb}{
+\begin{tikzpicture}
+\filldraw[fill=darkblue,draw=darkblue] circle (4pt);
+\end{tikzpicture}
+}
+\newcommand{\newdbcc}{
+\begin{tikzpicture}
+\filldraw[fill=darkblue,draw=darkblue] circle (5pt);
+\end{tikzpicture}
+}
+
+\usepackage[most]{tcolorbox}
+\usepackage{setspace}
+\linespread{1.1}
+
+%%SPARKLINE SETTINGS%%
+%sparkline colors
+\definecolor{sparkrectanglecolor}{named}{gs15}
+\definecolor{sparkbottomlinecolor}{named}{gs15}
+\definecolor{sparklinecolor}{named}{black}
+\definecolor{sparkspikecolor}{named}{black}
+%change sparkline height
+\renewcommand\sparklineheight{2.5}
+\renewcommand\sparklinethickness{1.6pt}
+\renewcommand\sparkdotwidth{2pt}
+\renewcommand\sparkspikewidth{3pt}
+%%dashed table line option
+\usepackage{arydshln}
+%set up arydshln environment
+\setlength{\dashlinedash}{0.4pt}
+\setlength{\dashlinegap}{1pt}
+\setlength{\arrayrulewidth}{0.4pt}
+
+%%fix chapter/section style via titlesec
+\usepackage{titlesec}
+
+%\titleformat{\section}[hang]{\Huge\bfseries}{\thesection\textcolor{blue}{|}}{0pt}{\Huge\bfseries}
+
+% chapter format
+\titleformat{\chapter}%
+{\huge\rmfamily\upshape\color{uscred}}% format applied to label+text
+{\llap{\colorbox{uscred}{\parbox{1.5cm}{\hfill\upshape\huge\color{white}\thechapter}}}}% label
+{2pt}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+% section format
+\titleformat{\section}%
+{\normalfont\huge\upshape\color{darkgrey}}% format applied to label+text
+{\llap{\colorbox{uscred}{\parbox{1.5cm}{\hfill\color{white}\thesection}}}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+%%%subsection format
+%%%%%UNCOMMENT TO USE
+\titleformat{\subsection}%
+{\normalfont\Large\bfseries\color{darkgrey}}% format applied to label+text
+{\llap{\colorbox{uscred}{\parbox{1.5cm}{\hfill\color{white}\thesubsection}}}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+\titleformat{\subsubsection}%
+{\normalfont\large\itshape\color{uscred}}% format applied to label+text
+{\llap{\colorbox{uscred}{\parbox{1.5cm}{\hfill\color{white}\thesubsubsection}}}}% label
+{1em}% horizontal separation between label and title body
+{}% before the title body
+[]% after the title body
+
+%%%%TIMELINE macro
+\newcommand\ytl[2]{
+\parbox[b]{8em}{\hfill{\color{uscgrey}\bfseries\sffamily #1}~$\cdots\cdots$~}\makebox[0pt][c]{$\bullet$}\vrule\quad \parbox[c]{4.5cm}{\vspace{7pt}\color{darkblue}\raggedright\sffamily #2.\\[7pt]}\\[-3pt]}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+\setcounter{secnumdepth}{4} %allows for paragraph
+\setcounter{tocdepth}{3} %%toc level
+%\renewcommand\abstractname{ }  %%gets rid of abstract title, could change it instead
+
+%%tcolorboxes for footerpage # and for definitions
+\newtcbox{\mybox}{nobeforeafter,colback=uscgrey,colframe=uscgrey!75!black,boxrule=0.5pt,arc=4pt,boxsep=0pt,left=6pt,right=6pt,top=6pt,bottom=6pt,tcbox raise base}
+%% FANCY HEADER
+
+\rfoot{ \hyperref[toc]{{\mybox{\color{white}\thepage}}} }
+\cfoot{}
+\rhead{{\textcolor{lightgray}{\rightmark}}}
+\lhead{{\textcolor{lightgray}{\leftmark}}}
+\lfoot{{\textcolor{lightgray}{\textsc{Gibson}: An Education Consulting \& Research Group}}}
+\renewcommand{\headrulewidth}{.1pt}
+\renewcommand{\footrulewidth}{.1pt}
+
+\makeindex

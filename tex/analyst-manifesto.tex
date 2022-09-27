@@ -1,0 +1,768 @@
+%Inputting premable information
+\input{preamble.tex}
+%\listoffigures
+%\newpage
+%\clearpage
+
+\begin{document}
+\pagestyle{empty}
+
+\null \vspace{1.33in}
+\noindent{\textcolor{uscgrey!50}{\Large{\textsc{Last Update: \today \\
+}}}} \\[.27cm]
+\noindent{\fontsize{36}{38}\selectfont{\color{black}{Principles of Quantitative Project Workflows}}} \\[.32cm]
+\noindent{\large{\textit{Data Management and Analysis}}} \\
+
+\vspace{3.33in}
+\hspace{3.33in} \begin{tabular}{|p{9cm}}
+{\textcolor{uscgrey!50}{\Large{\textsc{Document created by:}}}} \\[.33cm]
+\includegraphics[scale=.35]{logo} \\[.3cm]
+{\textcolor{lightgray}{635 Downey Way, VPD, Los Angeles, CA 90089}} \\
+{\textcolor{lightgray}{\href{https://cesr.usc.edu/care}{https://cesr.usc.edu/care}}} \\
+\end{tabular}
+
+\cleardoublepage
+\vspace{1cm}
+\tableofcontents
+\noindent\hrulefill
+\addtocontents{toc}{~\hrule\vspace{.2cm}\par}
+\addtocontents{toc}{~\hfill\textbf{Pg.}\par}
+\vspace{.25in}
+\cleardoublepage
+%%%%%%%%%%%%%%section
+\pagestyle{fancy}
+
+%%%%%%%%%%%%%%%%INTRO
+\section{Introduction}
+The purpose of this document is to outline and codify some general principles for working with data on projects with a quantitative component. Below, we elaborate upon three principles that should systematically and consistently guide how each analyst approaches quantitative analyses. They are:
+\begin{itemize}
+	\item Replicability
+	\item Transferability
+	\item Accessibility.
+\end{itemize}
+
+We explain the meaning and rationale for each of these goals below. And, then, we list some expectations and overarching principles. Finally, we discuss how to best organize information (that is, folder, file, and variable naming conventions to better achieve these principals/goals). At the end, we provide an introduction to the Center for Applied Research in Education's (CARE's) computing environment, and a quick synopsis of \texttt{Stata} packages written by contributing researchers that may automate or simplify some repetitive procedures that commonly arise on our projects.\\
+
+This document is inspired, and borrows heavily, from similar guides for applied researchers, including Matthew Gentzkow and Jesse Shapiro's \href{https://www.brown.edu/Research/Shapiro/pdfs/CodeAndData.pdf}{Code and Data for the Social Sciences: A Practicioner's Guide} and Julian Reif's \href{https://julianreif.com/guide/}{Stata Coding Guide}.\footnote{This document is narrowly focused on principles and rules for developing and maintaining transparent and replicable quantitative workflows in a collaborative environment. For a similar document that codifies analytic choices, see Donald Green's \href{https://alexandercoppock.com/Green-Lab-SOP/Green_Lab_SOP.html}{Standard Operating Procedures} handbook for experimental designs.}
+
+\section{Overarching Goals and Rationale} \label{sec:rationale}
+\subsection{Some Inviolable Commandments}
+\begin{itemize}
+	\item Never overwrite source data.
+	\item Never store files that contain personally identifiable data on your local machine. In fact, try not to save \emph{any} data on your local machine.
+	\item Try your best to be wrong internally before being wrong externally.
+	\item When output or results do not look correct (e.g., odd counts, ranges, means), always investigate with a skeptical mindset. Recheck your code, examine the raw data, and establish additional examination points within your code. Hold the mindset that everything you have done is wrong, until you have confirmed that this is not the case.\footnote{To facilitate this type of scrutiny, a good habit is to generate tables of summary statistics (e.g., minimum/maximum values, missing patterns) on key variables, disaggregated by natural grouping structures in your data (e.g., school year, state). This can help identify programming or coding errors before you begin analysis.}
+	\item Be intensely curious and thorough about examining the raw data.
+	\item Be \href{https://journals.sagepub.com/doi/pdf/10.1177/1536867X0400300414}{assertive}!
+	\item Never ignore the results from a merge. Mismatches can be the result of missing observations, ID issues, or other ways in which the data are not structured as you expected\footnote{The \texttt{R} package \texttt{tidylog} provides functionality similar to \texttt{Stata}'s for summarizing merge results in the \texttt{tidyverse}.}
+	\item Always log the results of each session that manipulates a dataset or generates a calculation used in a document that's shared externally. The \texttt{preamble} .ado written will help institutionalize this rule in your workflow.
+	\item Never haphazardly drop an observation.
+	\item All calculations in a report \textbf{must} have a code footprint.
+	\item Don't copy and paste results from a statistical program to a document that is shared externally.
+	\item Be sure to set the seed (and, in \texttt{Stata}, your -sortseed-) at the top of each script.\footnote{Seeds and particularly sortseeds should be set immediately prior to the command requiring a stable random number or sort is used. Since pseudo random numbers come one by one from a list created by an algorithm using the seed, if commands which utilize a random number (for breaking ties in sorts or otherwise) any commands added between setting the seed and the desired command could change the result.}
+	\item In the script preamble, be sure to indicate the creation date, author, and purpose of the syntax file, and maintain an update log with a concise note summarizing the reason and date for a substantive change in the source code.
+	\item Where possible, rely on legacy code to perform procedures that have already been done.
+	\item If you're not sure, \bf{just ask}.
+\end{itemize}
+
+\subsection{Replicability}
+\begin{itemize}
+	\item Workflows and results generated by one analyst for one project should be easily and accurately replicated by another analyst. This principle requires that the principal analyst establishes a clear, documented workflow, and each procedure that leads to a transformation of variables, or destruction of data, is recorded in a syntax file.
+	\item Although we aim to review each other's code for every project, we typically only adhere to this principle consistently for projects with a complicated data management or analysis component, for projects with a high level of external visibility, and for new researchers. But, it is our goal to continue to make this more systematic, particularly as we add new staff.
+	\item Each analyst should be able to replicate the results another analyst calculates in any software (with some decimal-place types of exceptions, particularly for more sophisticated procedures).
+	\item For code review, the assigned QA researchers should denote sections requiring the attention of the primary analyst with a unique symbol that will allow the analyst to quickly control+F to find sections that require review. Below, is an example from a \texttt{Stata} .do file that was QA'd by Danial Hoepfner.
+\end{itemize}
+
+\begin{lstlisting}
+/*
+Created by: MWG
+Creation date: 4/15/2019
+UPDATE LOG:
+*!DH Note 5/30/2019: QC by DH look for *!DH for comments
+*!DH Note 5/31/2019: More QC
+*/
+*!DH Note 5/30/2019: I don't have this scheme
+if  `"`c(username)'"' !=`"dhoepfner"' preamble, ///
+	clientf(relsw_2017/sped_transitions) ///
+	log mkdir sub(output syntax results documentation ///
+	final raw csv converted zip clean) ///
+	scheme(plotplainblind_rel) ///
+	logpath(output) logname(${rq})
+
+\end{lstlisting}
+
+\begin{itemize}
+
+	\item To the extent possible, the methodological lead or primary analyst should enumerate QA steps that should be performed at different waypoints throughout a project workflow.
+\end{itemize}
+
+\subsection{Transferrability}
+\begin{itemize}
+	\item Code should be transferable across projects and across individuals. That is, if one analyst left tomorrow, another one should be able to pick up her code from a given project and use it.
+	\item Be sure to annotate any program or package dependencies in the preamble of your code. In \texttt{R}, this means loading all packages used in the preamble.
+	\item Annotate your code richly, throughout each section, so that a future analyst (perhaps you!) can easily understand what was done (e.g., the workflow, processes), and why. Remember that what is apparent to you while you are in the middle of a project may not be apparent to a future analyst (or your future self!).
+	\item If one analyst develops code for preparing files for a project, another analyst should be able to use this code for similar projects and problems, or even borrow components of it for similar procedures for different projects. Clearly structuring and annotating your code will facilitate this type of sharing.
+	\item For multi-year projects, include the date (with year) with the comment so future analysts can see which comments are most recent.
+	\item In \texttt{R}, never \texttt{setwd} to a directory on your local machine.\footnote{In \texttt{RStudio}, it is better to maximize the Project functionality to set working directories}
+\end{itemize}
+
+\subsection{Accessibility}
+\begin{itemize}
+	\item Code should be annotated and grouped by data management and analysis procedure.
+	\item Ideally, some sort of structure should be created for your syntax files so that it flows logically, intuitively, and clearly.
+	\item Sections of code should be clearly demarcated, such as ``begin cleaning file X'',``begin cleaning file Y'', ``merging Y and X''.
+	\item Use informative names for local and global macros and variables, even if temporary (unless created and deleted within a few lines of code).
+	\item If any sort of cleaning occurs outside of syntax, for example using an excel sheet to organize variable names across files, annotate that process in the script extensively.
+\end{itemize}
+
+\section{Expectations and Guiding Principles} \label{sec:expectations}
+\begin{itemize}
+\item Code should have a structure or outline that (roughly) follows the workflow of analytic project (see Section 4.2.1 below for more on this):
+	\begin{itemize}
+		\item Data import/conversion from .txt/.csv/.sasbdat/etc. to format of the chosen software
+		\item Data cleaning and managing
+		\item Labeling and variable recoding and construction
+		\item Analysis
+		\item Presentation and output
+	\end{itemize}
+\item Anything that destroys, manipulates, or changes a file in any way should be recorded in code
+	\begin{itemize}
+		\item After it is finalized, the base analytic file should \textbf{never} be overwritten.
+		\item This includes duplicate removal, dropping extraneous cases, variable creation and/or recoding, etc.
+		\item That is, the file constructed during the data preparation and management phase should always be retained. The inevitable changes to this file that occur during the analysis phase should either not be saved (that is, the analysis portion of your .do file must be re-run each time), or should be saved as a separate file.
+		\item This perhaps goes without saying, but the raw files should also not be overwritten. Raw files should not be editted, and if they must be, they should be saved with a new name noting the nature of any edits made to the original.\footnote{This should only be done in rare cases where, say, a file includes a header row above variable names, or includes characters which prevent the accurate import of data. Even still, scripted management of these issues is almost always preferred. \bf{Data values in raw files should never be edited}.}
+	\end{itemize}
+\item Analysis commands that produce results that ultimately go in a deliverable or published report should be annotated in the syntax file.
+	\begin{itemize}
+		\item Ideally, this will be annotated, i.e., *Table 2 crosstab.
+	\end{itemize}
+\item For analysts who use \texttt{Stata}, we strongly recommend you use the Gibson \texttt{preamble} command. The front--matter defines global path macros that will facilitate replication and quality assurance inspections.
+\item In general, syntax or .do files and raw source files should be stored on a network drive (e.g., the \url{S:/}drive) to ensure they are recoverable in case of some type of failure. If you need to have them accessible locally, please ensure they are backed-up to a network drive as soon as you are able.
+\end{itemize}
+
+\section{Naming folders and files} \label{sec:folders}
+When possible, (particularly for data and code stored on the \url{S:/shared/data/} drive on Azure) please name folders and files in a systematic way that is free of non-alphanumeric characters (save for underscore delimiters). Please do not include spaces, parentheses, or other symbols in folder or filenames as these can cause programming scripts to choke. Typical convention is to use snake\textunderscore{}case rather than CamelCase, though this has varied by researcher (and, consequently, project). Once a project folder name has been set, it should almost never be changed, since doing so will break all code referring to it.
+
+\subsection{Folder Naming and Structure}
+The project folder should include some distinctive moniker including the project client or title (like AISD\_student\_survey) without project or school year included in the title. Project directories should be clearly and intuitively structured and labeled. Typically, syntax files will be in a folder separate from data files, and raw source files will be in a separate sub-folder from final analytic files.\footnote{Keep in mind that there limits to folder path lengths (260 characters on our \textsf{MS Windows} server). This is affected by both file name length and the number of sub-folders the file is nested in; so, please keep file nesting to a minimum where possible to avoid hitting this limit.}
+
+\subsubsection{Common sub-folders}
+We generally use the same sub-folder or sub-directory structure in each project folder. We separate information into folders like \textbf{raw}, \textbf{converted}, \textbf{processed}, and \textbf{final} data as well as \textbf{syntax}, \textbf{output}, \textbf{results} (e.g. from models), \textbf{temp} (for tempfiles), \textbf{archive} (for archived or deprecated code), and other associated files like \textbf{latex} (for \LaTeX{} files) or \textbf{\texttt{HTML}} If futher organization of files is useful, nest those distinctions within these base folders. For example, if a large project has district administrative data, observation data, afterschool data, and survey data create those folders within raw, converted, processed, and so forth.
+\begin{itemize}
+	\item\textbf{raw}: Unaltered files as received from the client or other source.
+	\item\textbf{converted}: Raw files converted to format used by analyst's language.
+	\item\textbf{processed}: Converted files which are partially processed (variable and value labels for example), but need more work before they are final/analytic (need to be merged or combined across years).
+	\item\textbf{final}: Analytic dataset which is used for descriptive tables, analysis, figures and other results.
+	\item\textbf{output}: Tables and other files which will not be used in reporting, such as tables describing data issues for the client. Files output at one stage to be imported at another(which are not data files). Examples: a list of students missing test data, an excel sheet you export to organize variable renames and re-import.
+	\item\textbf{output/logs/}: Store log files from \texttt{Stata}/\texttt{R} sessions. Logs should always be saved with the date in the name so that the point where errors may have been introduced can be detected.
+	\item\textbf{results}: Tables, figures, and other output that will or could be used in reporting.
+	\item\textbf{syntax}: Script files.
+	\item\textbf{latex/html/temp}: Use as needed to store \LaTeX{} and HTML files or other atypical files needed or produced.
+\end{itemize}
+
+The top of your script file should contain macros for each folder to make it easy to access, or use the \texttt{preamble} command which does so.
+\begin{lstlisting}
+foreach fol in raw converted processed output final {
+	global `fol' = ${sf}${fyear}`fol'
+}
+\end{lstlisting}
+
+
+
+\subsubsection{Working across Project Years} In most cases, projects take place across multiple years.\footnote{Even if a project is expected to only last one year, create a year\_1 as projects extending is not uncommon.}. The folder structure silos the data by year in most cases. Commonly, we have the sub-folders shown in the section above are nested within project year folders (named ``year\_1", ``year\_2" \ldots ``year\_N")  This notation also makes it easy to access to create macros which can refer to the prior year by parsing the original year\_N macro. This allows for easy inclusion of data elements you want to add to the current year\rq{}s data.\footnote{\texttt{preamble} can also do this for you.}
+
+\begin{lstlisting}
+global fyear `"year_7"'
+global lyfyear `"year_`=`=substr(`"${fyear}"',-1,1)'-1'"'
+
+foreach y in `"ly"' `""' {
+	global `y'sf `"${stem}project_folder/${`y'fyear}/"'
+	global `y'syntax `"${`y'sf}//syntax/"'
+	global `y'converted `"${`y'sf}/converted/"'
+	global `y'processed `"${`y'sf}/processed/"'
+	global `y'final `"${`y'sf}/final/"'
+	global `y'results `"${`y'sf}/results/"'
+	global `y'output `"${`y'sf}/output/"'
+	global `y'raw `"${`y'sf}/raw/"'
+}
+\end{lstlisting}
+
+The code example above will product raw and lyraw globals which refer to the folder in the relevant years.
+
+\subsection{File Naming}
+In general, filenames should:
+\begin{itemize}
+	\item NOT contain non-alphanumeric characters (only contain \texttt{[A-Za-z0-9]} and underscores)
+	\item contain underscores rather than spaces
+	\item avoid starting folder and filenames with numbers (\textit{e.g.},  2017\_projectname\_school)
+	\item use consistent abbreviations
+	\item use camel case ({\it{e.g.}}, \textbf{F}ile\textbf{N}ame\textbf{O}ne) to compress file name length where underscores are not needed or all lowercase. Do not use arbitrary case (\textit{e.g.},  staffSTUDENT\_YR2012, myFileNAME\_for2013\_vER2.txt)
+	\item be constructed to encourage looping over file names (that is, consistently named with sequenced elements). Example:  surveyresponses\_school1\_2014\_grade8.dta.   Underscores can help with looping over sub-elements of a filename!
+	\item If you must use versioning, be consistent in version labeling and meaning.  File versions 1 and 2 could be suffixed with ``V1" and ``V2" but if you make a dataset for \texttt{Stata} version 12 or 14 make this distinct (\textit{e.g,}. school1\_2014\_survey\_stata\_ver14.dta).
+	\end{itemize}
+
+\subsubsection{Syntax file naming}
+These rules apply for naming all file types in our Data folder hierarchy; however, for syntax ({\it{e.g.}}, do-files) files we prefer that the file names are prefixed with a numeric 'order' so they can be run in the proper order across the folder.
+
+For example:
+\linespread{1}
+\begin{itemize}[label=]
+	\item   \textbf{10}\_clean\_raw.do
+	\item   \textbf{11}\_convert\_raw.do
+	\item   \textbf{12}\_process\_clean.do
+	\item   \textbf{21}\_analysis\_descriptivesRQ1.do
+	\item   \textbf{22}\_analysis\_descriptivesRQ2.do
+	\item   \textbf{23}\_analysis\_modelsRQ1.do
+	\item   \textbf{30}\_analysis\_appendix.do
+\end{itemize}
+\linespread{1.25}
+
+For surplus syntax files that don't neatly fit into the analysis process/sequence, use a distinct (or large) number to set it apart (like 99).  Examples include files containing meta code (like labeling), ado-files used to process procedures across multiple syntax files in this sub-directory , or scratchpad files of code you don't want to erase/lose.
+
+Continuing the previous example:
+
+\linespread{1}
+
+\begin{itemize}[label=]
+	\item   {\textcolor{gray!95!}{\textbf{10}\_clean\_raw.do}}
+	\item    {\textcolor{gray!95!}{\textbf{11}\_convert\_raw.do}}
+	\item    {\textcolor{gray!95!}{\textbf{12}\_process\_clean.do}}
+	\item    {\textcolor{gray!95!}{\textbf{21}\_analysis\_descriptivesRQ1.do}}
+	\item   {\textcolor{gray!95!}{\textbf{22}\_analysis\_descriptivesRQ2.do}}
+	\item    {\textcolor{gray!95!}{\textbf{23}\_analysis\_modelsRQ1.do}}
+	\item    {\textcolor{gray!95!}{\textbf{30}\_analysis\_appendix.do}}
+	\item    {\textcolor{uscred}{\textbf{99}\_varlabels.do}}
+	\item    {\textcolor{uscred}{\textbf{99}\_value\_labels.do}}
+	\item    {\textcolor{uscred}{\textbf{99}\_scratchpad\_assigngroups.do}}
+	\item    {\textcolor{uscred}{\textbf{99}\_adofile\_maketables.do}}
+\end{itemize}
+\linespread{1.25}
+
+\section{Naming variables, macros, and other characteristics in \texttt{Stata} datasets} \label{sec:variables}
+Variables (columns), macros, and characteristics names should follow the constraints and conditions from \texttt{Stata} and \texttt{R}. Even in Excel and other program (where these rules don't apply), if we can enter variable names with the same rules that apply in \texttt{Stata} and \texttt{R}, then transferring this data cleanly will help reduce data cleaning effort. \\
+
+Rules which meet \texttt{Stata} and \texttt{R} standards:  variables (and macros) can contain up to \textsf{32} characters. A variable name may contain only the digits 0 to 9, upper or lower case English alpha characters (\texttt{A to Z}), and underscores; and the first character cannot be a number or an underscore.\footnote{Stata variables can be started with an underscore without issue, locals in Stata can, but should not start with an underscore, globals cannot as Stata uses the underscore internally to differentiate between locals and globals.} Except where necessary, such as folder paths, years, and macros that need to persist when other script files are called from a main script, locals should be used rather than globals. \\
+
+We advise creating \textsf{loopable}, consistent variable names that also convey meaning when possible (though you have -variable labels- and characteristics (-char-) to store that information. If the variable attributes are too long to easily store in a variable name then use short abbreviations (that hopefully capture some attribute with loopable structure) and rely on the labels and codebook to decipher meaning. \\
+
+In terms of having loopable, consistent naming, follow similar patterns as for file naming where the entity is followed by the time or level component and any adjunct details in the suffix. Since space is at a premium, abbreviate any entities as necessary.\footnote{\textit{For example}: ``grade" can be ``gr\_", student can be ``stu\_", but remember to label your variables!}
+
+Here are some good examples:
+\begin{itemize}[label=]
+	\item   {\textcolor{uscred}{\textbf{student}}}\_grade8\_{\textcolor{cyan}{2004}}
+	\item   {\textcolor{uscred}{\textbf{student}}}\_grade8\_{\textcolor{cyan}{2008}}
+	\item   {\textcolor{uscred}{\textbf{student}}}\_grade8\_{\textcolor{cyan}{2012}}
+	\item   {\textcolor{uscgold}{\textbf{staff}}}\_grade8\_{\textcolor{cyan}{2004}}
+	\item   {\textcolor{uscgold}{\textbf{staff}}}\_grade8\_{\textcolor{cyan}{2008}}
+	\item   {\textcolor{uscgold}{\textbf{staff}}}\_grade8\_{\textcolor{cyan}{2012}}
+	\item   {\textcolor{uscred}{\textsf{student}}}\_grade12\_{\textcolor{cyan}{2004}}
+	\item   {\textcolor{uscred}{\textsf{student}}}\_grade12\_{\textcolor{cyan}{2006}}
+	\item   {\textcolor{uscred}{\textsf{student}}}\_grade12\_{\textcolor{cyan}{2008}}
+	\item   {\textcolor{uscred}{\textsf{student}}}\_grade12\_{\textcolor{cyan}{2012}}
+	\item   {\textcolor{uscgold}{\textsf{staff}}}\_grade12\_{\textcolor{cyan}{2004}}
+	\item   {\textcolor{uscgold}{\textsf{staff}}}\_grade12\_{\textcolor{cyan}{2008}}
+	\item   {\textcolor{uscgold}{\textsf{staff}}}\_grade12\_{\textcolor{cyan}{2012}}
+\end{itemize}
+
+This type of  variable naming makes it easy to loop over type ({\textcolor{uscred}{student}}, {\textcolor{uscgold}{staff}}),\footnote{We typically indicate the level of analysis (e.g., \textcolor{uscred}{\textbf{stu\_}} for \textcolor{uscred}{\textbf{students}} or \textcolor{uscgold}{\textbf{tch\_}} for \textcolor{uscgold}{\textbf{teachers}}) in the variable name prefix} grade level (8, 10, 12), and school year ({\textcolor{cyan}{2004, 2006, 2008, and 2012}).  Since these variable names are shorter than 32 characters, it leaves plenty of room to add suffixes to these names when generating new versions of these variables (\textit{e.g.}, {\textcolor{uscgold}{\textsf{staff}}}\_grade12\_{\textcolor{cyan}{2012}}\_\textbf{meanscore},  {\textcolor{uscgold}{\textsf{staff}}}\_grade12\_{\textcolor{cyan}{2012}}\_\textbf{v2}).\footnote{Beyond looping convenience, (like the folder naming convention above) these variable names are extensible. As new data is added in future years of the project, we can add a staff\_grade6\_2018 survey with no problem to the existing programming if our code takes advantage of all levels of values contained in the data (e.g., the stata code uses something like \texttt{levelsof year, loc(yy)} rather than explicitly listing each year in the dataset).} \\
+
+
+Macro names should be descriptive and facilitate easy recall of what they are within loops. Descriptive macro names also reduce the chance an analyst will accidentally use the same macro name twice, which can be a difficult bug to figure out.\footnote{Or worse, not be detected and produce the wrong result!} While \texttt{Stata} does not require indentation in loops or if blocks, each loop and if block should be indented to facilitate reading. For long loops or if blocks, the start and particularly the end, should be noted. For example, this may work:
+\begin{lstlisting}
+local list race course gender grade
+levelsof teacher, local(aa)
+foreach a in `aa' {
+levelsof student, local(bb)
+foreach b in `bb' {
+foreach c in `list' {
+levelsof `c' if teacher == `a' & student == `b'
+foreach d in `r(levels)' {
+count if teacher == `a' student == `b' & `c' ==`d'
+}
+}
+}
+}
+\end{lstlisting}
+But this will work \emph{and} be easier to read, especially if the manipulations or calculations or are more extensive, or if there are if blocks within it. Particularly with complex nested loops, labeling or numbering each loop eases de-bugging and future modifications.
+\begin{lstlisting}
+local varlist race course gender grade
+levelsof teacher, local(teachers)
+foreach t in `teachers' { //Teacher
+  levelsof student, local(students)
+  foreach s in `students' { //Students
+    foreach v in `varlist' { //Variable
+      levelsof `v' if teacher == `t' & student == `s', local(varlevs)
+      foreach vl in `varlevs' { //Levels
+        count if teacher == `t' student == `s' & `v' ==`vl'
+      } //End level of variable
+    } //End of variable
+  } //End of student
+} //End of teacher
+\end{lstlisting}
+
+Procedures and lists should be unified. This is to say, if a similar non-standard procedure is going to be executed multiple times, it should be done in a loop, or using a program/function written at the top of the syntax file.\footnote{Standard repetitive procedures should be turned into an .ado file (in \texttt{Stata}, or package library in \texttt{R})} Lists of variables which will be used repeatedly should be defined once. Parameters that may be adjusted within a loop that are used several times should be defined as locals, for example, colors, text sizes, and spacing adjustments in a loop producing a figure composed of multiple -twoway- commands.
+
+
+\section{Gibson\rq{}s computing environment and tools} \label{sec:environment}
+\subsection{Azure Virtual Machine}
+The Azure remote desktop environment is where all Personally Identifiable Information(PII) is stored and all quantitative/programming work is conducted. Researchers access it via a remote desktop connection using multi-factor authentication. While the purpose of the server is to maintain a secure environment for PII data, data files which do not contain PII are also stored here for convenience (for example, school level files and other publically available data). {\large\textbf{Never store PII data on your location machine!}} Other file types, such as output, draft results files, \LaTeX{} or Markdown reports are also stored here before they are ready for consumption, either by non-quantitative staff or clients. \\
+
+Quantitative data are stored on a storage device which is connected to the Azure environment. Files stored here can be accessed by mapping the device to a letter drive. To map this device follow these steps.
+
+\begin{enumerate}
+	\item Log into the Gibson Azure VM.
+	\item Open file explorer.
+	\item Go to this PC.
+	\item Click on the ... at the top right.
+	\item Select map network drive.
+	\item Select Drive S.
+	\item enter: \textbackslash{}\textbackslash{}gibsondata.file.core.windows.net\textbackslash{}data
+	\item Make sure reconnect at sign in is selected.
+	\item Make sure connect using different credentials is not selected.
+	\item Click Finish.
+\end{enumerate}
+
+Within that device is the shared folder, where all data are stored, and Users. Each Gibson employee has a folder where they can store private files, or files which are not relevant to projects or the broader team, such as experimental syntax for .ados or libraries. While other Gibson staff cannot access these folders, the information stored is recoverable by those with administrative privileges. \\
+
+
+
+Gibson is charged for use of the Azure server whenever it is ``on'' regardless of whether computing resources are being used.\footnote{A portion of the costs are fixed, but running the environment 24 hours a day, rather than the 8\textendash{}10 hours during of the day that people are typically working would increase the cost to operate it.} The Azure server is set to turn off at 8pm Central Time each night and can be turned on in the Azure portal (\href{https://portal.azure.com/\#home}{https://portal.azure.com/\#home}). Researchers are encouraged to work at whatever times they would like, and should not hesitate to activate the sever if they would like to work and it is off, but should turn it off if it is not in use by anyone. Some projects and data sharing agreements will also require Gibson to limit access to data, and consequently, access to those folders will be restricted to those who are active on the project. If you need to be added to a folder, or be given the ability to turn the virtual machine on or off,  \href{mailto:dhoepfner@gibsonconsult.com}{Danial} and \href{mailto:ataylan@gibsonconsult.com}{Ali} are able to do so. Most staff prefer to use the Azure Remote Desktop on one of their two screens, reserving the other for email, slack, and other items. To open it in only one screen right click the ``Gibson Azure VM'' icon in the remote desktop application, and turn off ``Use default settings.'' That option will then appear. \\
+
+
+\subsection{Egnyte}
+Egnyte is used to securely transfer PII and other files to and from clients and other project stateholders. Files containing PII should be removed from Egnyte once they are stored in the Azure environment. Egnyte can also be used to share links which allow clients or other stakeholders to download files and upload files securely. Note that the permission structures of the folder may prevent sharing. Egnyte will allow links to be generated which can't be used by those outside of Gibson so confirm they are set correctly before distributing links. Egnyte can also be mapped to your local machine\footnote{But don't store PII on your local machine!} and the Azure environment. Egnyte should be mapped to the Y: drive in order to maintain code transferability. To map Egnyte:
+
+\begin{enumerate}
+	\item Download, install, and open the Egnyte Desktop App.
+	\item Sign in.
+	\item Click on settings.
+	\item Click add drive on the manage drives tab.
+	\item Map the drive to Y:
+\end{enumerate}
+
+\subsection{Sharepoint}
+Sharepoint is where client, R\&E management, and business development files are stored. Results files and reports should be moved here when ready for consumption. Sharepoint also requires multi-factor authentication. Sub-pages in SharePoint (Research and Evaluation, Business Development, Operations, and Consulting) are listed at the top. Click one to enter that sub-site. Within the Research and Evaluation page, the projects tab on the left side is the high-level storage container for project work. The management tab includes mangement and projection files. Within each project folder are relatively standardized subject folders.
+
+\begin{itemize}
+	\item\textbf{contracts}: Client contracts.
+	\item\textbf{data}: Data request documents, and may also contain copies of data sent through uncommon channels, such as paper survey data emailed to a project director. Data files stored here will generally be copied (if not PII) or moved (if PII) to Azure.
+	\item\textbf{id}: Instrument development files, which are survey instruments, observation, and interview protocols  and other files related to the development of those.
+	\item\textbf{pm}: Project management files including meeting agendas OneNote files, progress reports, and budget tracking information.
+	\item\textbf{reporting}: Reporting files and related files, generally deliverables to clients.
+	\item\textbf{results}: Tables, figures, and other output that will or could be used in reporting transferred for non-Azure users' access.
+\end{itemize}
+
+Folder structures on SharePoint are more variable than in Azure, but proper organization is still important. Note that project years are nested inside topics on SharePoint, where the opposite is true on Azure. This is because it is typically more useful to toggle between years within a topic area for these tasks, whereas quantitative workflows are better suited to topic areas nested within year. SharePoint can also be linked to your local machine and the Azure environment, which is useful exporting results files from \texttt{Stata} or \texttt{R} once ready. To map SharePoint to a computer (local or Azure):
+
+\begin{enumerate}
+	\item Open SharePoint and go to the main Projects folder under Research and Evaluation.
+	\item Click the Sync button.
+	\item This will open up a dialogue about setting up OneDrive, sign in and work through this process.
+	\item When it asks for the folder to use locally, please enter: C:\textbackslash{}data\textbackslash{}sp\textbackslash{}
+	\begin{itemize}
+		\item create that folder if it does not exist
+	\end{itemize}
+	\item This should create a linkage whose path will be: C:\textbackslash{}data\textbackslash{}sp\textbackslash{}GIBSON\textbackslash{}Research and Evaluation - Documents\textbackslash{}...project\_folder
+\end{enumerate}
+
+Microsoft file types opened from SharePoint can be editted by multiple people at the same time and are typically automatically saved instantly,\footnote{Provided all users have current versions of Office.} and so SharePoint documents are ideal when collaboration on a report or proposal is needed. SharePoint is still being implemented, and so some conventions may change. \\
+
+
+\subsection{Qualtrics}
+Gibson uses Qualtrics for survey projects (and survey elements of other projects). Data analysts should always use \texttt{qualtrics} (\texttt{Stata}) or the \texttt{qualtRics} library (\texttt{R}), since these programs increase efficiency and reduce the potential for error in survey cleaning and preparation. The API token for Qualtrics is available in the ``Qualtrics IDs'' section of the account settings. {\textbf{Do not share the Qualtrics API token! A bad actor could use this to delete all of our survey data.}}
+
+\subsection{Simpletexting}
+Simpletexting is a service that Gibson uses to send survey inviations or other information en masse. This service is only active when it is being used for a project. Messages should be crafted carefully to decrease the probability of being marked spam, such as avoiding words typically associated with spam messages. URLs used in text messages should https:// (rather than http://) and should use Simpletextings link shortener tool. When using macros in simpletexting, note that the length must be set if it is greater than the default length, and if a distribution is opened again, those macro lengths must be re-set or they will return to their defaults.
+
+\subsection{Pythonanywhere}
+Pythonanywhere is the service that Gibson uses to house \texttt{python}-based dashboards (using the Dash library). Sample syntax is available for uploading updated data and resetting the app(s).
+
+\subsection{Shinyapps}
+Shinyapps is the service that Gibson uses to house Rshiny-based dashboards.
+
+\subsection{gibsonsurveys.com}
+Gibsonsurveys.com (along with various project-specific urls) is where web portals and dashboards\footnote{Using an iframe to pythonanywhere or shinyapps} are housed for survey projects. Web portals or other materials should be placed in different folders for each project. For example, www.gibsonsurveys.com/pis/... for the Texas parent involvement survey and www.gibsonsurveys.com/psos/... for the Texas post-school outcomes survey. Sample syntax for uploading/updating web pages programattically using WinSCP is available.
+
+\subsection{Autohotkey}
+Autohotkey is a program that allows users to create their own (and more extensive) hotkeys. While a wide variety of operations can be programmed using the tool, hotkeys which add dated notes (*!DH Note 1/20/2022: A note) and section delimiters are strongly encouraged to improve the readability of code. Researchers should feel free to customize their own scripts for the programming languages and hotkeys/repetitively-typed-snippets that they use. Assistance in setting up and customizing Autohotkey scripts is available.
+
+\section{Gibson-researcher written \texttt{Stata} programs} \label{sec:ados}
+This section lists and provides a brief description of the programs contributed by current and former Gibson researchers. The programs were developed to simplify reoccurring actions that we encounter in our projects. We are slowly migrating these to our Gibson GitHub account so that we can centralize their storage, and to facilitate collaboration. These are monolingual, and all developed for \texttt{Stata}: we encourage polyglots to port these to their preferred programming language.
+\subsection{\href{https://github.com/GibsonConsult/preamble-ado}{\texttt{preamble.ado}}}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{preamble.ado} incorporates the typical information that's included in a premable into a single command. It has several options that simplifies this routine step.\footnote{The original version was written by Marshall Garland, but was re-written by Danial Hoepfner to adapt to Azure and SharePoint evironments and extend usability.} It also produces date and time globals and globals for Gibson colors, which can optionally be supressed.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{f}older}: This is for the root directly and the shared drive alias. It will incorporate the Azure storage device path and include globals for all of the typical data folders(raw converted syntax processed output results final). This is \textbf{required}.
+\item \texttt{\underline{fy}ear}: This indicates the folder year for projects with multiple years (in the format of year\_N).
+\item \texttt{\underline{share}point}: Specifies a global with the path to the SharePoint folder for the project.
+\item \texttt{\underline{e}gnyte}: Specifies a global with the path to the Egnyte folder for the project.
+\item \texttt{\underline{add}folders}: Adds non-typical folders to the project-year, such as latex or html.
+\item \texttt{\underline{last}year}: Adds globals for the prior project year (year\_N-1), must be used with the \texttt{\underline{fy}ear} option.
+\item \texttt{\underline{stem}}: replace the Azure file path stem with another (useful for working on local machines).
+\item \texttt{\underline{nomk}}: Do not make any folders that do not already exist.
+\item \texttt{\underline{norep}ort}:Suppress output noting the globals defined and other actions taken by the command.
+\item \texttt{\underline{y}ear}: Specify a year for globals, the year is detected from the system if not in use.
+\item \texttt{\underline{noy}ear}: Supress the creation of year and date globals.
+\item \texttt{\underline{log}}: Name of the log file for the session, to be stored in output/logs/. \textbf{Not required, but very strongly reccomended for most syntax files}.
+\item \texttt{\underline{dis}card}: \texttt{discard} command to drop programs in memory (and re-read from .ado path).
+\item \texttt{\underline{reset}}: \texttt{frames reset} command to clear all data frames in memory.
+\item \texttt{\underline{nocol}ors}: Supress the creation of Gibson color globals.
+\end{enumerate}
+\begin{lstlisting}
+preamble, f(region_10_sped) fy(year_7) share(R10_Ind_8_Survey) ///
+	 e(`"Client Work\Region 9 Parent Survey Materials\"') ///
+	 add(latex) last nomk
+\end{lstlisting}
+
+\subsection{\href{https://github.com/marshallwg/varcount}{\texttt{varcount.ado}}}
+\subsubsection{Author: Marshall Garland}
+\subsubsection{Description}
+\texttt{varcount.ado} is a command that counts the number of variables in a variable list or, if a variable list isn't provided, the number of variales in the dataset.
+\subsubsection{Usage and options}
+See the GitHub readme for instructions.
+
+\subsection{\href{https://github.com/GibsonConsult/graphsout}{\texttt{graphsout.ado}}}
+\subsubsection{Author: Marshall Garland}
+\subsubsection{Description}
+\texttt{graphsout.ado} is a wrapper for \texttt{graph export} that allows the user to export a graph from \texttt{Stata} to multiple file formats.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item The command requires a file name.
+\item \texttt{replace}: Overwrite the file name on disk, if it exists.
+\item \texttt{type}: File format from the list of allowable file formats for \texttt{graph export}. Type \texttt{help graph export} to see the list of available formats.
+\item \texttt{font}: Graph text font.
+\end{enumerate}
+\begin{lstlisting}
+graphsout /Volumes/Desktop/, ///
+  replace type(emf pdf svg) font("Calibri")
+\end{lstlisting}
+
+\subsection{qualtrics.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{qualtrics.ado} interacts with the qualtrics API to list, download, and clean survey data collected on Qualtrics.
+\subsubsection{Usage and options}
+The command has three sub-commands, \texttt{qualtrics set}, \texttt{qualtrics list}, and \texttt{qualtrics get}. Unlike most of our .ados it has a help file.
+\begin{enumerate}
+\item \texttt{qualtrics set}: Set a password and optional user name to use instead of the token and data center each call.
+\begin{itemize}
+\item \texttt{\underline{t}oken}: Qualtrics token for our organization.\textbf{This is sensitive! Someone could delete all of our survey data with it}, required.
+\item \texttt{\underline{c}enter}: Qualtrics data center for our organization, ``co1'' is our data center, required.
+\item \texttt{\underline{p}assword}: a password you specify, required.
+\item \texttt{\underline{u}ser}: a user name you specify, only needed if using multiple Qualtrics accounts or sharing an .ado folder with another.
+\end{itemize}
+\item \texttt{qualtrics list}: List surveys associated with your account, filter results.
+\begin{itemize}
+\item \texttt{\underline{m}atch}: Only list surveys whose name matches the included regular expression.
+\item \texttt{\underline{a}ctive}: Only list surveys that are active.
+\item \texttt{\underline{modr}ange(MDY:MDY)}: Only list surveys that were modified in a date range.
+\item \texttt{\underline{creater}ange(MDY:MDY)}: Only list surveys that were created in a date range.
+\item \texttt{\underline{u}ser}: The username, optional.
+\item \texttt{\underline{p}assword}: The password, required unless specifying token and data center.
+\item \texttt{\underline{t}oken}: Qualtrics token for our organization, not needed if using password/user.
+\item \texttt{\underline{c}enter}: Qualtrics data center for our organization, not needed if using password/user.
+\end{itemize}
+\item \texttt{qualtrics get}: Download, convert, and clean a survey.
+\begin{itemize}
+\item \texttt{\underline{id}}: Only list surveys whose name matches the included regular expression.
+\item \texttt{\underline{csv}}: Folder to save the .csv file (name is maintained from Qualtricsm required.
+\item \texttt{\underline{dta}}: Folder and file name to save the .dta file, required if using clean option.
+\item \texttt{\underline{val}uelabs}: Request value labels rather than numeric codes, incompatible with clean option.
+\item \texttt{\underline{cl}ean}: Clean dataset, apply labels, value labels and characteristics from survey meta data.
+\item \texttt{\underline{relab}}: Display code to variable adjust labels.
+\item \texttt{\underline{reval}lab}: Display code to value adjust labels.
+\item \texttt{\underline{pre}serve}: Restore current dataset, rather than loading downloaded file.
+\item \texttt{\underline{u}ser}: The username, optional.
+\item \texttt{\underline{p}assword}: The password, required unless specifying token and data center.
+\item \texttt{\underline{t}oken}: Qualtrics token for our organization, not needed if using password/user
+\item \texttt{\underline{c}enter}: Qualtrics data center for our organization, not needed if using password/user
+\end{itemize}
+
+\end{enumerate}
+
+\begin{lstlisting}
+qualtrics set, t(`"QualtricsAPITokenHere"') c(`"az1"') ///
+	password(ApassW0rd) u(danial)
+
+qualtrics list, password(ApassW0rd) m(Fall 20[1-2][890])
+
+qualtrics get, id(`"SV_XYXYXYXYX"') password(ApassW0rd) ///
+     csv(`"C:/Users/dhoepfner/Desktop/"') ///
+     dta(`"C:\Users\dhoepfner\Desktop\testdata.dta"') clean relab reval
+
+\end{lstlisting}
+
+\subsection{gtab.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{gtab.ado} is a tool to build custom tables easily. It works by creating a set of string vectors which you then fill with subsequent gtab commands. You can preview, import into \texttt{Stata} or export to excel
+\subsubsection{Usage and options}
+The command has six sub-commands, \texttt{gtab init}, \texttt{gtab [column\_name]}, and \texttt{gtab fill}, \texttt{gtab preview}, \texttt{gtab import}, and \texttt{gtab export}. You can also build multiple tables simultaneously by inserting a number between gtab and the subcommand.
+\begin{enumerate}
+\item \texttt{gtab [number] \underline{init}ialize}: Initialize a table (or tables using a number) with the desired columns names and order. gtab will then print commands to add to each column.
+\item \texttt{gtab [number] [column\_name]}: After initializing the table, add row(s) to that column. Information can be added to columns in any order, though cells meant to be empty for a particular row must be filled (either by having a blank gtab [column\_name] command or using -\texttt{gtab fill}-.
+\item \texttt{gtab [number] fill}: Since gtab works by using a series of string vectors, in empty cells aren't specified, the table can become mis-aligned. gtab fill equalizes the vector lengths so that all columns have the same number of rows, by adding blank rows to columns shorter than the longest column.
+\item \texttt{gtab [number] \underline{pre}view}: Preview table in the results window.
+\item \texttt{gtab [number] \underline{imp}ort}: Import table into current data frame.
+\item \texttt{gtab [number] \underline{exp}ort ``file\_path\_and\_name''}: Export table to an excel file.
+\begin{itemize}
+\item \texttt{\underline{sheet}}: Workbook sheet to export to.
+\item \texttt{\underline{replace}}: Replace excel file if it exists.
+\item \texttt{\underline{sheetreplace}}: Replace sheet if it exists.
+\item \texttt{\underline{sheetmodify}}:Modify sheet if it exists.
+\end{itemize}
+
+\end{enumerate}
+
+Basic usage with a number, allowing multiple tables simultaneously
+\begin{lstlisting}
+sysuse auto, clear
+gtab 1 init var mean min max
+
+gtab 1 var Variable
+gtab 1 mean Mean
+gtab 1 min Min
+gtab 1 max Max
+
+ds *
+foreach v in `r(varlist)' {
+    if !regexm(`"`:type `v''"',`"str"') {
+       gtab var `:variable label `v''
+       sum `v'
+       gtab 1 mean `:di %3.1f `r(mean)''
+       gtab 1 min `:di %3.0f `r(min)''
+       gtab 1 max `:di %3.0f `r(max)''
+   }
+}
+gtab 1 mean Legend: Data from auto.dta
+gtab 1 fill
+gtab 1 pre
+gtab 1 export "C/users/dhoepfner/results/example.xlsx", ///
+replace sheet("descriptives")
+\end{lstlisting}
+
+
+Advanced Usage
+\begin{lstlisting}
+sysuse auto, clear
+/*Here I am going to use the levels of foreign to help define the columns,
+this will make tables extensible to additional levels added to a variable.
+I'll define and add to a local called gtab that defines the columns.
+When filling the table, you can use of the same loops for the table.*/
+
+local gtab var
+levelsof foreign
+foreach l in `r(levels)' {
+    local gtab `gtab' m`l'
+}
+*Now adding a column for the difference
+local gtab `gtab' d
+*Now adding columns for the Ns
+levelsof foreign
+foreach l in `r(levels)' {
+    local gtab `gtab' m`l'
+}
+*Now initializing gtab
+gtab init `gtab'
+*Now filling the title row
+gtab var Variable
+levelsof foreign
+foreach l in `r(levels)' {
+    gtab m`l' `:label (foreign) `l'' Mean
+    gtab n`l' `:label (foreign) `l'' N
+}
+gtab  d Difference
+
+/*Now we'll loop over each variable and level of foreign
+and extract and export the desired statistics.
+Notice that we can use stored results to define stars for significance,
+or whatever else we want.*/
+
+local vct=0
+ds foreign, not
+foreach v in `r(varlist)' {
+  if !regexm(`"`:type `v''"',`"str"') {
+      local ++vct
+      gtab  var `:variable label `v''
+      levelsof foreign
+      foreach l in `r(levels)' {
+        sum `v' if foreign == `l'
+        local m`l' `r(mean)'
+        local n`l' `r(N)'
+        gtab m`l' `:di %7.1fc `m`l'''
+        gtab n`l' `:di %6.0fc `n`l'''
+      }
+      local stars
+      ranksum `v', by(foreign)
+      if `r(p_exact)' < .05 local stars `"*"'
+      if `r(p_exact)' < .01 local stars `"**"'
+      if `r(p_exact)' < .001 local stars `"***"'
+        if `vct' !=5  gtab  d `:di %3.2f  `=`m1'-`m0'''`stars'
+        if `vct' ==5  gtab  d `:di %3.2f  `=`m1'-`m0'''Custom Tables!
+   }
+}
+*Import the table into the current dataset/frame.
+gtab import
+
+\end{lstlisting}
+
+
+\subsection{fmtexl.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{fmtexl.ado} is a wrapper for putexcel which formats excel tables nicely. By default it loops over each sheet in an excel file. Notes: You need to use -\texttt{fmtexl using}- syntax to specify excel file. Default settings are not optimal unless formatting tables like JS likes, the bw option is closer to journal style tables.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{headf}ill}: Header fill color, default is Gibson blue
+\item \texttt{\underline{headt}ext}: Header text color, default is white
+\item \texttt{\underline{lf}ill}: Light row fill color, default is white
+\item \texttt{\underline{df}ill}: Dark row fill color, default is light blue
+\item \texttt{\underline{row}col}: Table body rows alternate colors
+\item \texttt{\underline{doub}lerowcol}: Table body rows alternate colors in blocks of two, for example, when including standard error in row below estimate.
+\item \texttt{\underline{headr}ows}: More than 1 header row, specify number
+\item \texttt{\underline{labc}ols}: More than 1 label column, specify number
+\item \texttt{\underline{specr}ange}:Specify table cell range rather then detect from import excel, allows formatting of multiple tables on the same sheet. Formatted as [A-Z]*[1-9]*:[A-Z]*[1-9]*
+\item \texttt{\underline{bw}}: Black and white journal style format. Overwrites all formatting options except for labcols and headrows
+\end{enumerate}
+
+\begin{lstlisting}
+fmtexl using "C/users/dhoepfner/results/example.xlsx", ///
+bw labc(2) headr(2)
+\end{lstlisting}
+
+\subsection{apchx.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{apchx.ado} loops over all variables in current dataset and looks for type differences in variables in a specified dataset. If you attempt to append a dataset in \texttt{Stata} and a variable is byte in one dataset, but string in another, you will get an error. Without this, \texttt{Stata} errors after the first mismatch and so this issue can repeatedly bite. It also has options to compare value ranges and labels in the two datasets.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{r}ange}: Check variable ranges are consistent across datasets.
+\item \texttt{\underline{l}abel}: Check value labels are consistent across datasets.
+\end{enumerate}
+
+\begin{lstlisting}
+apchx using "C/users/dhoepfner/cleaned/example.dta", label range
+\end{lstlisting}
+
+\subsection{conwithin.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{conwithin.ado} checks whether variable list A is constant within variable list B. Very useful for panel or nested data.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{wi}thin}: Variable list B, typically ID variables in which variable list A should be constant.
+\item \texttt{\underline{t}ag}: Tags observations where a variable in list A is not constant within list B.
+\end{enumerate}
+\begin{lstlisting}
+conwithin race gender disability, wi(student_number) t(t)
+sort student_number
+list student_number race if race_t == 1
+\end{lstlisting}
+
+
+\subsection{edrop.ado}
+\subsubsection{Author: Eric Booth}
+\subsubsection{Description}
+\texttt{edrop.ado}: -cap drop- won't drop all variables in a list if one does not exist. -edrop- drops all variables in the list, and reports those that were not present in the first place.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{k}eep}: Keep that list instead of dropping
+\item \texttt{\underline{t}emp}: Also drop temporary variables
+\end{enumerate}
+
+\begin{lstlisting}
+edrop race1 race2 race3
+\end{lstlisting}
+
+\subsection{latest.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{latest.ado}: Best practice is to save analytic datasets with a date appended, so the point errors were introduced can be tracked down. However, this means you need to specify the date of the most recent file for each -\texttt{use}- command. This returns `r(file)' which is the most recently saved file, optionally matching a regular expression.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{m}atch}: Return most recent file matching regular expression.
+\end{enumerate}
+
+\begin{lstlisting}
+latest `"${converted}"', m(`"student.+\.dta"')
+use `"${converted}`r(file)'"', clear
+\end{lstlisting}
+
+
+\subsection{char\_finder.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{char\_finder.ado}: -\texttt{charlist}- on SSC by Nick Cox works great to identify all of the unqiue characters in a string variable. However, sometimes order matters, and so char\_finder returns the text of a string, with the ASCII codes displayed below. Works well for finding Microsoft Word style quotes and other symbols (which \texttt{Stata} reads as a series of ASCII codes, which can then be replaced with subinstr() and `=char(x)').
+\subsubsection{Usage and options}
+\begin{lstlisting}
+char_finder `";asdklfjsd ;lfjd()*)*)(@"'
+\end{lstlisting}
+
+
+\subsection{fixtex.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{fixtex.ado} converts symbols in text that will cause a \LaTeX{} script to choke into their proper codes.
+\subsubsection{Usage and options}
+\begin{lstlisting}
+fixtex A sentence_with $ some probl&em symbols
+tex `r(output)'
+\end{lstlisting}
+
+
+\subsection{texpdf.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{fixtex.ado} compiles a .tex document.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{c}opy}: Copy resulting PDF to a new location.
+\item \texttt{\underline{open}}: Open PDF once compiled.
+\end{enumerate}
+
+\begin{lstlisting}
+texpdf `"${tex}region_10_report.tex"', copy(`"${to_distribute}"')
+\end{lstlisting}
+
+\subsection{syntax\_saver.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{syntax\_saver.ado} attempts to recover syntax when \texttt{Stata} crashes. Copies temporary syntax files to a restore folder, or another specified folder. Typically, \texttt{Stata} only stores the most recent run in an instance, so if you only highlighted one line, that's likely all you'll get.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{r}estore}: Specify a folder to save restored files to. Default is C:/Users/`c(username)'/Desktop/restore/
+\item \texttt{\underline{T}oday}: Only restore files from today.
+\end{enumerate}
+
+\begin{lstlisting}
+syntax_saver, today
+\end{lstlisting}
+
+
+\subsection{latout.ado}
+\subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
+\subsubsection{Description}
+\texttt{latout.ado} Loops over a list of variables, or all variables in a dataset, and produces a PDF to check for issues. Can select a -by- variable to present figures/tables by another variable. Particularly useful for multi-year data submissions.
+\subsubsection{Usage and options}
+\begin{enumerate}
+\item \texttt{\underline{title}}: Title of PDF
+\item \texttt{\underline{pa}th}: Where to save PDF, default is working directory
+\item \texttt{\underline{foot}er}: Text to place in footer which links back to TOC, default is "Return to Top"
+\item \texttt{\underline{byv}ars}: Variables to split output by, max  =2
+\item \texttt{\underline{h}oles}: Where to have a hole in panelled figures, useful when byvars levels is an odd number
+\item \texttt{\underline{col}umns}: Number of columns for by variable panelled figures
+\item \texttt{\underline{cut}off}: Cutoff between number of categories before variables are treated as continuous, default is 5
+\item \texttt{\underline{S}trings}: How to display strings with more than CUT categories, options are -list-, -sample-, and -skip-, default is sample
+\item \texttt{\underline{varn}ames}: Include variable names (not just labels) in output.
+\end{enumerate}
+
+\begin{lstlisting}
+latout , title("AVID Submission 2017") ///
+pa`"(${output}"') bvy(institution year) varn
+\end{lstlisting}
+
+%%second column
+\input{backpage.tex}
+\end{document}
