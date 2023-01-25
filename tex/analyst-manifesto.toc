@@ -10,78 +10,73 @@
 \contentsline {section}{\numberline {4}Naming folders and files}{9}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Folder Naming and Structure}{9}{subsection.4.1}%
 \contentsline {subsubsection}{\numberline {4.1.1}Common sub-folders}{10}{subsubsection.4.1.1}%
-\contentsline {subsubsection}{\numberline {4.1.2}Working across Project Years}{11}{subsubsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.2}Working across Project Years}{10}{subsubsection.4.1.2}%
 \contentsline {subsection}{\numberline {4.2}File Naming}{11}{subsection.4.2}%
 \contentsline {subsubsection}{\numberline {4.2.1}Syntax file naming}{12}{subsubsection.4.2.1}%
 \contentsline {section}{\numberline {5}Naming variables, macros, and other characteristics in \texttt {Stata} datasets}{13}{section.5}%
-\contentsline {section}{\numberline {6}Gibson'{}s computing environment and tools}{15}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Azure Virtual Machine}{15}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Egnyte}{17}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Sharepoint}{17}{subsection.6.3}%
-\contentsline {subsection}{\numberline {6.4}Qualtrics}{18}{subsection.6.4}%
-\contentsline {subsection}{\numberline {6.5}Simpletexting}{18}{subsection.6.5}%
-\contentsline {subsection}{\numberline {6.6}Pythonanywhere}{19}{subsection.6.6}%
-\contentsline {subsection}{\numberline {6.7}Shinyapps}{19}{subsection.6.7}%
-\contentsline {subsection}{\numberline {6.8}gibsonsurveys.com}{19}{subsection.6.8}%
-\contentsline {subsection}{\numberline {6.9}Autohotkey}{19}{subsection.6.9}%
-\contentsline {section}{\numberline {7}Gibson-researcher written \texttt {Stata} programs}{19}{section.7}%
-\contentsline {subsection}{\numberline {7.1}\href {https://github.com/GibsonConsult/preamble-ado}{\texttt {preamble.ado}}}{20}{subsection.7.1}%
-\contentsline {subsubsection}{\numberline {7.1.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{20}{subsubsection.7.1.1}%
-\contentsline {subsubsection}{\numberline {7.1.2}Description}{20}{subsubsection.7.1.2}%
-\contentsline {subsubsection}{\numberline {7.1.3}Usage and options}{20}{subsubsection.7.1.3}%
-\contentsline {subsection}{\numberline {7.2}\href {https://github.com/marshallwg/varcount}{\texttt {varcount.ado}}}{21}{subsection.7.2}%
-\contentsline {subsubsection}{\numberline {7.2.1}Author: Marshall Garland}{21}{subsubsection.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}Description}{21}{subsubsection.7.2.2}%
-\contentsline {subsubsection}{\numberline {7.2.3}Usage and options}{21}{subsubsection.7.2.3}%
-\contentsline {subsection}{\numberline {7.3}\href {https://github.com/GibsonConsult/graphsout}{\texttt {graphsout.ado}}}{21}{subsection.7.3}%
-\contentsline {subsubsection}{\numberline {7.3.1}Author: Marshall Garland}{21}{subsubsection.7.3.1}%
-\contentsline {subsubsection}{\numberline {7.3.2}Description}{21}{subsubsection.7.3.2}%
-\contentsline {subsubsection}{\numberline {7.3.3}Usage and options}{21}{subsubsection.7.3.3}%
-\contentsline {subsection}{\numberline {7.4}qualtrics.ado}{22}{subsection.7.4}%
-\contentsline {subsubsection}{\numberline {7.4.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{22}{subsubsection.7.4.1}%
-\contentsline {subsubsection}{\numberline {7.4.2}Description}{22}{subsubsection.7.4.2}%
-\contentsline {subsubsection}{\numberline {7.4.3}Usage and options}{22}{subsubsection.7.4.3}%
-\contentsline {subsection}{\numberline {7.5}gtab.ado}{23}{subsection.7.5}%
-\contentsline {subsubsection}{\numberline {7.5.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{23}{subsubsection.7.5.1}%
-\contentsline {subsubsection}{\numberline {7.5.2}Description}{23}{subsubsection.7.5.2}%
-\contentsline {subsubsection}{\numberline {7.5.3}Usage and options}{23}{subsubsection.7.5.3}%
-\contentsline {subsection}{\numberline {7.6}fmtexl.ado}{26}{subsection.7.6}%
-\contentsline {subsubsection}{\numberline {7.6.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{26}{subsubsection.7.6.1}%
-\contentsline {subsubsection}{\numberline {7.6.2}Description}{26}{subsubsection.7.6.2}%
-\contentsline {subsubsection}{\numberline {7.6.3}Usage and options}{26}{subsubsection.7.6.3}%
-\contentsline {subsection}{\numberline {7.7}apchx.ado}{27}{subsection.7.7}%
-\contentsline {subsubsection}{\numberline {7.7.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{27}{subsubsection.7.7.1}%
-\contentsline {subsubsection}{\numberline {7.7.2}Description}{27}{subsubsection.7.7.2}%
-\contentsline {subsubsection}{\numberline {7.7.3}Usage and options}{27}{subsubsection.7.7.3}%
-\contentsline {subsection}{\numberline {7.8}conwithin.ado}{27}{subsection.7.8}%
-\contentsline {subsubsection}{\numberline {7.8.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{27}{subsubsection.7.8.1}%
-\contentsline {subsubsection}{\numberline {7.8.2}Description}{27}{subsubsection.7.8.2}%
-\contentsline {subsubsection}{\numberline {7.8.3}Usage and options}{27}{subsubsection.7.8.3}%
-\contentsline {subsection}{\numberline {7.9}edrop.ado}{28}{subsection.7.9}%
-\contentsline {subsubsection}{\numberline {7.9.1}Author: Eric Booth}{28}{subsubsection.7.9.1}%
-\contentsline {subsubsection}{\numberline {7.9.2}Description}{28}{subsubsection.7.9.2}%
-\contentsline {subsubsection}{\numberline {7.9.3}Usage and options}{28}{subsubsection.7.9.3}%
-\contentsline {subsection}{\numberline {7.10}latest.ado}{28}{subsection.7.10}%
-\contentsline {subsubsection}{\numberline {7.10.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{28}{subsubsection.7.10.1}%
-\contentsline {subsubsection}{\numberline {7.10.2}Description}{28}{subsubsection.7.10.2}%
-\contentsline {subsubsection}{\numberline {7.10.3}Usage and options}{28}{subsubsection.7.10.3}%
-\contentsline {subsection}{\numberline {7.11}char\_finder.ado}{28}{subsection.7.11}%
-\contentsline {subsubsection}{\numberline {7.11.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{28}{subsubsection.7.11.1}%
-\contentsline {subsubsection}{\numberline {7.11.2}Description}{28}{subsubsection.7.11.2}%
-\contentsline {subsubsection}{\numberline {7.11.3}Usage and options}{29}{subsubsection.7.11.3}%
-\contentsline {subsection}{\numberline {7.12}fixtex.ado}{29}{subsection.7.12}%
-\contentsline {subsubsection}{\numberline {7.12.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{29}{subsubsection.7.12.1}%
-\contentsline {subsubsection}{\numberline {7.12.2}Description}{29}{subsubsection.7.12.2}%
-\contentsline {subsubsection}{\numberline {7.12.3}Usage and options}{29}{subsubsection.7.12.3}%
-\contentsline {subsection}{\numberline {7.13}texpdf.ado}{29}{subsection.7.13}%
-\contentsline {subsubsection}{\numberline {7.13.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{29}{subsubsection.7.13.1}%
-\contentsline {subsubsection}{\numberline {7.13.2}Description}{29}{subsubsection.7.13.2}%
-\contentsline {subsubsection}{\numberline {7.13.3}Usage and options}{29}{subsubsection.7.13.3}%
-\contentsline {subsection}{\numberline {7.14}syntax\_saver.ado}{29}{subsection.7.14}%
-\contentsline {subsubsection}{\numberline {7.14.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{29}{subsubsection.7.14.1}%
-\contentsline {subsubsection}{\numberline {7.14.2}Description}{29}{subsubsection.7.14.2}%
-\contentsline {subsubsection}{\numberline {7.14.3}Usage and options}{30}{subsubsection.7.14.3}%
-\contentsline {subsection}{\numberline {7.15}latout.ado}{30}{subsection.7.15}%
-\contentsline {subsubsection}{\numberline {7.15.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{30}{subsubsection.7.15.1}%
-\contentsline {subsubsection}{\numberline {7.15.2}Description}{30}{subsubsection.7.15.2}%
-\contentsline {subsubsection}{\numberline {7.15.3}Usage and options}{30}{subsubsection.7.15.3}%
+\contentsline {section}{\numberline {6}USC-CARE's'{}s computing environment and tools}{15}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Box}{15}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Sharepoint and OneDrive}{15}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Qualtrics}{16}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Shinyapps}{16}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Researcher written \texttt {Stata} programs}{16}{section.7}%
+\contentsline {subsection}{\numberline {7.1}\href {https://github.com/GibsonConsult/preamble-ado}{\texttt {preamble.ado}}}{16}{subsection.7.1}%
+\contentsline {subsubsection}{\numberline {7.1.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{16}{subsubsection.7.1.1}%
+\contentsline {subsubsection}{\numberline {7.1.2}Description}{16}{subsubsection.7.1.2}%
+\contentsline {subsubsection}{\numberline {7.1.3}Usage and options}{17}{subsubsection.7.1.3}%
+\contentsline {subsection}{\numberline {7.2}\href {https://github.com/marshallwg/varcount}{\texttt {varcount.ado}}}{18}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}Author: Marshall Garland}{18}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Description}{18}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Usage and options}{18}{subsubsection.7.2.3}%
+\contentsline {subsection}{\numberline {7.3}\href {https://github.com/GibsonConsult/graphsout}{\texttt {graphsout.ado}}}{18}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Author: Marshall Garland}{18}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Description}{18}{subsubsection.7.3.2}%
+\contentsline {subsubsection}{\numberline {7.3.3}Usage and options}{18}{subsubsection.7.3.3}%
+\contentsline {subsection}{\numberline {7.4}qualtrics.ado}{18}{subsection.7.4}%
+\contentsline {subsubsection}{\numberline {7.4.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{18}{subsubsection.7.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.2}Description}{18}{subsubsection.7.4.2}%
+\contentsline {subsubsection}{\numberline {7.4.3}Usage and options}{19}{subsubsection.7.4.3}%
+\contentsline {subsection}{\numberline {7.5}gtab.ado}{20}{subsection.7.5}%
+\contentsline {subsubsection}{\numberline {7.5.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{20}{subsubsection.7.5.1}%
+\contentsline {subsubsection}{\numberline {7.5.2}Description}{20}{subsubsection.7.5.2}%
+\contentsline {subsubsection}{\numberline {7.5.3}Usage and options}{20}{subsubsection.7.5.3}%
+\contentsline {subsection}{\numberline {7.6}fmtexl.ado}{23}{subsection.7.6}%
+\contentsline {subsubsection}{\numberline {7.6.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{23}{subsubsection.7.6.1}%
+\contentsline {subsubsection}{\numberline {7.6.2}Description}{23}{subsubsection.7.6.2}%
+\contentsline {subsubsection}{\numberline {7.6.3}Usage and options}{23}{subsubsection.7.6.3}%
+\contentsline {subsection}{\numberline {7.7}apchx.ado}{24}{subsection.7.7}%
+\contentsline {subsubsection}{\numberline {7.7.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{24}{subsubsection.7.7.1}%
+\contentsline {subsubsection}{\numberline {7.7.2}Description}{24}{subsubsection.7.7.2}%
+\contentsline {subsubsection}{\numberline {7.7.3}Usage and options}{24}{subsubsection.7.7.3}%
+\contentsline {subsection}{\numberline {7.8}conwithin.ado}{24}{subsection.7.8}%
+\contentsline {subsubsection}{\numberline {7.8.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{24}{subsubsection.7.8.1}%
+\contentsline {subsubsection}{\numberline {7.8.2}Description}{24}{subsubsection.7.8.2}%
+\contentsline {subsubsection}{\numberline {7.8.3}Usage and options}{24}{subsubsection.7.8.3}%
+\contentsline {subsection}{\numberline {7.9}edrop.ado}{24}{subsection.7.9}%
+\contentsline {subsubsection}{\numberline {7.9.1}Author: Eric Booth}{24}{subsubsection.7.9.1}%
+\contentsline {subsubsection}{\numberline {7.9.2}Description}{25}{subsubsection.7.9.2}%
+\contentsline {subsubsection}{\numberline {7.9.3}Usage and options}{25}{subsubsection.7.9.3}%
+\contentsline {subsection}{\numberline {7.10}latest.ado}{25}{subsection.7.10}%
+\contentsline {subsubsection}{\numberline {7.10.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{25}{subsubsection.7.10.1}%
+\contentsline {subsubsection}{\numberline {7.10.2}Description}{25}{subsubsection.7.10.2}%
+\contentsline {subsubsection}{\numberline {7.10.3}Usage and options}{25}{subsubsection.7.10.3}%
+\contentsline {subsection}{\numberline {7.11}char\_finder.ado}{25}{subsection.7.11}%
+\contentsline {subsubsection}{\numberline {7.11.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{25}{subsubsection.7.11.1}%
+\contentsline {subsubsection}{\numberline {7.11.2}Description}{25}{subsubsection.7.11.2}%
+\contentsline {subsubsection}{\numberline {7.11.3}Usage and options}{26}{subsubsection.7.11.3}%
+\contentsline {subsection}{\numberline {7.12}fixtex.ado}{26}{subsection.7.12}%
+\contentsline {subsubsection}{\numberline {7.12.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{26}{subsubsection.7.12.1}%
+\contentsline {subsubsection}{\numberline {7.12.2}Description}{26}{subsubsection.7.12.2}%
+\contentsline {subsubsection}{\numberline {7.12.3}Usage and options}{26}{subsubsection.7.12.3}%
+\contentsline {subsection}{\numberline {7.13}texpdf.ado}{26}{subsection.7.13}%
+\contentsline {subsubsection}{\numberline {7.13.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{26}{subsubsection.7.13.1}%
+\contentsline {subsubsection}{\numberline {7.13.2}Description}{26}{subsubsection.7.13.2}%
+\contentsline {subsubsection}{\numberline {7.13.3}Usage and options}{26}{subsubsection.7.13.3}%
+\contentsline {subsection}{\numberline {7.14}syntax\_saver.ado}{26}{subsection.7.14}%
+\contentsline {subsubsection}{\numberline {7.14.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{26}{subsubsection.7.14.1}%
+\contentsline {subsubsection}{\numberline {7.14.2}Description}{26}{subsubsection.7.14.2}%
+\contentsline {subsubsection}{\numberline {7.14.3}Usage and options}{27}{subsubsection.7.14.3}%
+\contentsline {subsection}{\numberline {7.15}latout.ado}{27}{subsection.7.15}%
+\contentsline {subsubsection}{\numberline {7.15.1}Author: \href {mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}{27}{subsubsection.7.15.1}%
+\contentsline {subsubsection}{\numberline {7.15.2}Description}{27}{subsubsection.7.15.2}%
+\contentsline {subsubsection}{\numberline {7.15.3}Usage and options}{27}{subsubsection.7.15.3}%

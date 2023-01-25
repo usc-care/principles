@@ -10,7 +10,7 @@
 \null \vspace{1.33in}
 \noindent{\textcolor{uscgrey!50}{\Large{\textsc{Last Update: \today \\
 }}}} \\[.27cm]
-\noindent{\fontsize{36}{38}\selectfont{\color{black}{Principles of Quantitative Project Workflows}}} \\[.32cm]
+\noindent{\fontsize{36}{38}\selectfont{\color{black}{Principles of Quantitative Project Workflows Management}}} \\[.32cm]
 \noindent{\large{\textit{Data Management and Analysis}}} \\
 
 \vspace{3.33in}
@@ -167,8 +167,6 @@ foreach fol in raw converted processed output final {
 }
 \end{lstlisting}
 
-
-
 \subsubsection{Working across Project Years} In most cases, projects take place across multiple years.\footnote{Even if a project is expected to only last one year, create a year\_1 as projects extending is not uncommon.}. The folder structure silos the data by year in most cases. Commonly, we have the sub-folders shown in the section above are nested within project year folders (named ``year\_1", ``year\_2" \ldots ``year\_N")  This notation also makes it easy to access to create macros which can refer to the prior year by parsing the original year\_N macro. This allows for easy inclusion of data elements you want to add to the current year\rq{}s data.\footnote{\texttt{preamble} can also do this for you.}
 
 \begin{lstlisting}
@@ -266,7 +264,6 @@ Here are some good examples:
 
 This type of  variable naming makes it easy to loop over type ({\textcolor{uscred}{student}}, {\textcolor{uscgold}{staff}}),\footnote{We typically indicate the level of analysis (e.g., \textcolor{uscred}{\textbf{stu\_}} for \textcolor{uscred}{\textbf{students}} or \textcolor{uscgold}{\textbf{tch\_}} for \textcolor{uscgold}{\textbf{teachers}}) in the variable name prefix} grade level (8, 10, 12), and school year ({\textcolor{cyan}{2004, 2006, 2008, and 2012}).  Since these variable names are shorter than 32 characters, it leaves plenty of room to add suffixes to these names when generating new versions of these variables (\textit{e.g.}, {\textcolor{uscgold}{\textsf{staff}}}\_grade12\_{\textcolor{cyan}{2012}}\_\textbf{meanscore},  {\textcolor{uscgold}{\textsf{staff}}}\_grade12\_{\textcolor{cyan}{2012}}\_\textbf{v2}).\footnote{Beyond looping convenience, (like the folder naming convention above) these variable names are extensible. As new data is added in future years of the project, we can add a staff\_grade6\_2018 survey with no problem to the existing programming if our code takes advantage of all levels of values contained in the data (e.g., the stata code uses something like \texttt{levelsof year, loc(yy)} rather than explicitly listing each year in the dataset).} \\
 
-
 Macro names should be descriptive and facilitate easy recall of what they are within loops. Descriptive macro names also reduce the chance an analyst will accidentally use the same macro name twice, which can be a difficult bug to figure out.\footnote{Or worse, not be detected and produce the wrong result!} While \texttt{Stata} does not require indentation in loops or if blocks, each loop and if block should be indented to facilitate reading. For long loops or if blocks, the start and particularly the end, should be noted. For example, this may work:
 \begin{lstlisting}
 local list race course gender grade
@@ -303,91 +300,37 @@ foreach t in `teachers' { //Teacher
 Procedures and lists should be unified. This is to say, if a similar non-standard procedure is going to be executed multiple times, it should be done in a loop, or using a program/function written at the top of the syntax file.\footnote{Standard repetitive procedures should be turned into an .ado file (in \texttt{Stata}, or package library in \texttt{R})} Lists of variables which will be used repeatedly should be defined once. Parameters that may be adjusted within a loop that are used several times should be defined as locals, for example, colors, text sizes, and spacing adjustments in a loop producing a figure composed of multiple -twoway- commands.
 
 
-\section{Gibson\rq{}s computing environment and tools} \label{sec:environment}
-\subsection{Azure Virtual Machine}
-The Azure remote desktop environment is where all Personally Identifiable Information(PII) is stored and all quantitative/programming work is conducted. Researchers access it via a remote desktop connection using multi-factor authentication. While the purpose of the server is to maintain a secure environment for PII data, data files which do not contain PII are also stored here for convenience (for example, school level files and other publically available data). {\large\textbf{Never store PII data on your location machine!}} Other file types, such as output, draft results files, \LaTeX{} or Markdown reports are also stored here before they are ready for consumption, either by non-quantitative staff or clients. \\
-
-Quantitative data are stored on a storage device which is connected to the Azure environment. Files stored here can be accessed by mapping the device to a letter drive. To map this device follow these steps.
-
-\begin{enumerate}
-	\item Log into the Gibson Azure VM.
-	\item Open file explorer.
-	\item Go to this PC.
-	\item Click on the ... at the top right.
-	\item Select map network drive.
-	\item Select Drive S.
-	\item enter: \textbackslash{}\textbackslash{}gibsondata.file.core.windows.net\textbackslash{}data
-	\item Make sure reconnect at sign in is selected.
-	\item Make sure connect using different credentials is not selected.
-	\item Click Finish.
-\end{enumerate}
-
-Within that device is the shared folder, where all data are stored, and Users. Each Gibson employee has a folder where they can store private files, or files which are not relevant to projects or the broader team, such as experimental syntax for .ados or libraries. While other Gibson staff cannot access these folders, the information stored is recoverable by those with administrative privileges. \\
-
-
-
-Gibson is charged for use of the Azure server whenever it is ``on'' regardless of whether computing resources are being used.\footnote{A portion of the costs are fixed, but running the environment 24 hours a day, rather than the 8\textendash{}10 hours during of the day that people are typically working would increase the cost to operate it.} The Azure server is set to turn off at 8pm Central Time each night and can be turned on in the Azure portal (\href{https://portal.azure.com/\#home}{https://portal.azure.com/\#home}). Researchers are encouraged to work at whatever times they would like, and should not hesitate to activate the sever if they would like to work and it is off, but should turn it off if it is not in use by anyone. Some projects and data sharing agreements will also require Gibson to limit access to data, and consequently, access to those folders will be restricted to those who are active on the project. If you need to be added to a folder, or be given the ability to turn the virtual machine on or off,  \href{mailto:dhoepfner@gibsonconsult.com}{Danial} and \href{mailto:ataylan@gibsonconsult.com}{Ali} are able to do so. Most staff prefer to use the Azure Remote Desktop on one of their two screens, reserving the other for email, slack, and other items. To open it in only one screen right click the ``Gibson Azure VM'' icon in the remote desktop application, and turn off ``Use default settings.'' That option will then appear. \\
-
-
-\subsection{Egnyte}
-Egnyte is used to securely transfer PII and other files to and from clients and other project stateholders. Files containing PII should be removed from Egnyte once they are stored in the Azure environment. Egnyte can also be used to share links which allow clients or other stakeholders to download files and upload files securely. Note that the permission structures of the folder may prevent sharing. Egnyte will allow links to be generated which can't be used by those outside of Gibson so confirm they are set correctly before distributing links. Egnyte can also be mapped to your local machine\footnote{But don't store PII on your local machine!} and the Azure environment. Egnyte should be mapped to the Y: drive in order to maintain code transferability. To map Egnyte:
-
-\begin{enumerate}
-	\item Download, install, and open the Egnyte Desktop App.
-	\item Sign in.
-	\item Click on settings.
-	\item Click add drive on the manage drives tab.
-	\item Map the drive to Y:
-\end{enumerate}
-
-\subsection{Sharepoint}
-Sharepoint is where client, R\&E management, and business development files are stored. Results files and reports should be moved here when ready for consumption. Sharepoint also requires multi-factor authentication. Sub-pages in SharePoint (Research and Evaluation, Business Development, Operations, and Consulting) are listed at the top. Click one to enter that sub-site. Within the Research and Evaluation page, the projects tab on the left side is the high-level storage container for project work. The management tab includes mangement and projection files. Within each project folder are relatively standardized subject folders.
-
+\section{USC-CARE's\rq{}s computing environment and tools} \label{sec:environment}
+tktktk
+\subsection{Box}
+tktktk
+\subsection{Sharepoint and OneDrive}
+tktktk
 \begin{itemize}
-	\item\textbf{contracts}: Client contracts.
-	\item\textbf{data}: Data request documents, and may also contain copies of data sent through uncommon channels, such as paper survey data emailed to a project director. Data files stored here will generally be copied (if not PII) or moved (if PII) to Azure.
-	\item\textbf{id}: Instrument development files, which are survey instruments, observation, and interview protocols  and other files related to the development of those.
-	\item\textbf{pm}: Project management files including meeting agendas OneNote files, progress reports, and budget tracking information.
-	\item\textbf{reporting}: Reporting files and related files, generally deliverables to clients.
-	\item\textbf{results}: Tables, figures, and other output that will or could be used in reporting transferred for non-Azure users' access.
+	\item\textbf{tk}:tk
 \end{itemize}
-
-Folder structures on SharePoint are more variable than in Azure, but proper organization is still important. Note that project years are nested inside topics on SharePoint, where the opposite is true on Azure. This is because it is typically more useful to toggle between years within a topic area for these tasks, whereas quantitative workflows are better suited to topic areas nested within year. SharePoint can also be linked to your local machine and the Azure environment, which is useful exporting results files from \texttt{Stata} or \texttt{R} once ready. To map SharePoint to a computer (local or Azure):
-
+tktktk
 \begin{enumerate}
 	\item Open SharePoint and go to the main Projects folder under Research and Evaluation.
 	\item Click the Sync button.
 	\item This will open up a dialogue about setting up OneDrive, sign in and work through this process.
-	\item When it asks for the folder to use locally, please enter: C:\textbackslash{}data\textbackslash{}sp\textbackslash{}
 	\begin{itemize}
 		\item create that folder if it does not exist
 	\end{itemize}
-	\item This should create a linkage whose path will be: C:\textbackslash{}data\textbackslash{}sp\textbackslash{}GIBSON\textbackslash{}Research and Evaluation - Documents\textbackslash{}...project\_folder
+	\item This should create a linkage whose path will depend on the user's operating system. For instance, in MacOS: /Users/(USERNAME)/Library/CloudStorage/OneDrive-SharedLibraries-UniversityofSouthernCalifornia/CESR-Education - (folder)
 \end{enumerate}
+
+/Users/garlandm/Library/CloudStorage/OneDrive-SharedLibraries-UniversityofSouthernCalifornia/CESR-Education - Business-Development
 
 Microsoft file types opened from SharePoint can be editted by multiple people at the same time and are typically automatically saved instantly,\footnote{Provided all users have current versions of Office.} and so SharePoint documents are ideal when collaboration on a report or proposal is needed. SharePoint is still being implemented, and so some conventions may change. \\
 
-
 \subsection{Qualtrics}
-Gibson uses Qualtrics for survey projects (and survey elements of other projects). Data analysts should always use \texttt{qualtrics} (\texttt{Stata}) or the \texttt{qualtRics} library (\texttt{R}), since these programs increase efficiency and reduce the potential for error in survey cleaning and preparation. The API token for Qualtrics is available in the ``Qualtrics IDs'' section of the account settings. {\textbf{Do not share the Qualtrics API token! A bad actor could use this to delete all of our survey data.}}
-
-\subsection{Simpletexting}
-Simpletexting is a service that Gibson uses to send survey inviations or other information en masse. This service is only active when it is being used for a project. Messages should be crafted carefully to decrease the probability of being marked spam, such as avoiding words typically associated with spam messages. URLs used in text messages should https:// (rather than http://) and should use Simpletextings link shortener tool. When using macros in simpletexting, note that the length must be set if it is greater than the default length, and if a distribution is opened again, those macro lengths must be re-set or they will return to their defaults.
-
-\subsection{Pythonanywhere}
-Pythonanywhere is the service that Gibson uses to house \texttt{python}-based dashboards (using the Dash library). Sample syntax is available for uploading updated data and resetting the app(s).
 
 \subsection{Shinyapps}
-Shinyapps is the service that Gibson uses to house Rshiny-based dashboards.
+Shinyapps is the service that we use uses to house Rshiny-based dashboards.
 
-\subsection{gibsonsurveys.com}
-Gibsonsurveys.com (along with various project-specific urls) is where web portals and dashboards\footnote{Using an iframe to pythonanywhere or shinyapps} are housed for survey projects. Web portals or other materials should be placed in different folders for each project. For example, www.gibsonsurveys.com/pis/... for the Texas parent involvement survey and www.gibsonsurveys.com/psos/... for the Texas post-school outcomes survey. Sample syntax for uploading/updating web pages programattically using WinSCP is available.
-
-\subsection{Autohotkey}
-Autohotkey is a program that allows users to create their own (and more extensive) hotkeys. While a wide variety of operations can be programmed using the tool, hotkeys which add dated notes (*!DH Note 1/20/2022: A note) and section delimiters are strongly encouraged to improve the readability of code. Researchers should feel free to customize their own scripts for the programming languages and hotkeys/repetitively-typed-snippets that they use. Assistance in setting up and customizing Autohotkey scripts is available.
-
-\section{Gibson-researcher written \texttt{Stata} programs} \label{sec:ados}
-This section lists and provides a brief description of the programs contributed by current and former Gibson researchers. The programs were developed to simplify reoccurring actions that we encounter in our projects. We are slowly migrating these to our Gibson GitHub account so that we can centralize their storage, and to facilitate collaboration. These are monolingual, and all developed for \texttt{Stata}: we encourage polyglots to port these to their preferred programming language.
+\section{Researcher written \texttt{Stata} programs} \label{sec:ados}
+This section lists and provides a brief description of the programs contributed by current and former colleagues at Gibson Consulting Group, as well as current researchers at USC-CARE. The programs were developed to simplify reoccurring actions that we encounter in our projects. These are monolingual, and are all developed for \texttt{Stata}: we encourage polyglots to port these to their preferred programming language.
 \subsection{\href{https://github.com/GibsonConsult/preamble-ado}{\texttt{preamble.ado}}}
 \subsubsection{Author: \href{mailto:dhoepfner@gibsonconsult.com}{Danial Hoepfner}}
 \subsubsection{Description}
