@@ -11,6 +11,7 @@
 \usepackage{rotating}
 \usepackage{color}
 \usepackage{multicol, subfigure}
+\usepackage{dirtree}
 \usepackage[fixed]{fontawesome5}
 \pdfminorversion=5
 \pdfobjcompresslevel=3
@@ -135,6 +136,36 @@ fill=mygreen, rounded corners, drop shadow]
 }}}}%
 \begin{mdframed}[]\relax%
 }{\end{mdframed}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Code setup in the listings macro
+\definecolor{codeblue}{rgb}{0.29296875, 0.51953125, 0.68359375}
+\definecolor{codegreen}{rgb}{0.47265625, 0.62890625, 0.40234375}
+\definecolor{codegray}{rgb}{0.95703125, 0.95703125, 0.95703125}
+\definecolor{codecrimson}{rgb}{0.87109375,0.3984375,0.3984375}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstset{frame=tb,
+  backgroundcolor=\color{backcolour},
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\ttfamily},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{codeblue},
+  commentstyle=\color{codegreen},
+  stringstyle=\color{codecrimson},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=4,
+  frame=tlbr,framesep=4pt,framerule=0pt
+}
+
+\input{stata-lstlisting.tex}
+
+%Fonts
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TITLE PAGE SETUP
 
@@ -279,7 +310,7 @@ fill=mygreen, rounded corners, drop shadow]
 \cfoot{}
 \rhead{{\textcolor{lightgray}{\rightmark}}}
 \lhead{{\textcolor{lightgray}{\leftmark}}}
-\lfoot{{\textcolor{lightgray}{\textsc{Gibson}: An Education Consulting \& Research Group}}}
+\lfoot{{\textcolor{lightgray}{\textsc{CARE}: Center for Applied Research in Education}}}
 \renewcommand{\headrulewidth}{.1pt}
 \renewcommand{\footrulewidth}{.1pt}
 
