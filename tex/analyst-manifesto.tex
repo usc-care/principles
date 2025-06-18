@@ -1,3 +1,4 @@
+\documentclass[11pt]{article}
 %Inputting premable information
 \input{preamble.tex}
 %\listoffigures
@@ -43,7 +44,7 @@ The purpose of this document is to outline and codify some general principles fo
 
 We explain the meaning and rationale for each of these goals below. And, then, we list some expectations and overarching principles. Finally, we discuss how to best organize information (that is, folder, file, and variable naming conventions to better achieve these principals/goals). At the end, we provide an introduction to the Center for Applied Research in Education's (CARE's) computing environment, and a quick synopsis of \texttt{Stata} packages written by contributing researchers that may automate or simplify some repetitive procedures that commonly arise on our projects.\\
 
-This document is inspired, and borrows heavily, from similar guides for applied researchers, including Matthew Gentzkow and Jesse Shapiro's \href{https://www.brown.edu/Research/Shapiro/pdfs/CodeAndData.pdf}{Code and Data for the Social Sciences: A Practicioner's Guide} and Julian Reif's \href{https://julianreif.com/guide/}{Stata Coding Guide}.\footnote{This document is narrowly focused on principles and rules for developing and maintaining transparent and replicable quantitative workflows in a collaborative environment. For a similar document that codifies analytic choices, see Donald Green's \href{https://alexandercoppock.com/Green-Lab-SOP/Green_Lab_SOP.html}{Standard Operating Procedures} handbook for experimental designs.} It has benefited from the input and contributions from several prior colleagues from different organizations. The full list of contributors is provided on the back page of the manual.
+This document is inspired, and borrows heavily, from similar guides for applied researchers, including Matthew Gentzkow and Jesse Shapiro's \href{https://www.brown.edu/Research/Shapiro/pdfs/CodeAndData.pdf}{Code and Data for the Social Sciences: A Practitioner's Guide} and Julian Reif's \href{https://julianreif.com/guide/}{Stata Coding Guide}.\footnote{This document is narrowly focused on principles and rules for developing and maintaining transparent and replicable quantitative workflows in a collaborative environment. For a similar document that codifies analytic choices, see Donald Green's \href{https://alexandercoppock.com/Green-Lab-SOP/Green_Lab_SOP.html}{Standard Operating Procedures} handbook for experimental designs.} It has benefited from the input and contributions from several prior colleagues from different organizations. The full list of contributors is provided on the back page of the manual.
 
 \section{Overarching Goals and Rationale} \label{sec:rationale}
 \subsection{Some Inviolable Commandments}
@@ -54,7 +55,7 @@ This document is inspired, and borrows heavily, from similar guides for applied 
 	\item When output or results do not look correct (e.g., odd counts, ranges, means), always investigate with a skeptical mindset. Recheck your code, examine the raw data, and establish additional examination points within your code. Hold the mindset that everything you have done is wrong, until you have confirmed that this is not the case.\footnote{To facilitate this type of scrutiny, a good habit is to generate tables of summary statistics (e.g., minimum/maximum values, missing patterns) on key variables, disaggregated by natural grouping structures in your data (e.g., school year, state). This can help identify programming or coding errors before you begin analysis. \texttt{Stata} code for these procedures is available in the code repository.}
 	\item Be intensely curious and thorough about examining the raw data.
 	\item Be \href{https://journals.sagepub.com/doi/pdf/10.1177/1536867X0400300414}{assertive}!
-	\item Never ignore the results from a merge. Mismatches can be the result of missing observations, ID issues, or other ways in which the data are not structured as you expected\footnote{The \texttt{R} package \texttt{tidylog} provides functionality similar to \texttt{Stata}'s for summarizing merge results in the \texttt{tidyverse}.}
+	\item Never ignore the results from a merge. Mismatches can be the result of missing observations, ID issues, or other ways in which the data are not structured as you expected\footnote{The \faRProject package \texttt{tidylog} provides functionality similar to \texttt{Stata}'s for summarizing merge results in the \texttt{tidyverse}.}
 	\item Always log the results of each session that manipulates a dataset or generates a calculation used in a document that's shared externally. The \texttt{preamble} .ado written will help institutionalize this rule in your workflow.
 	\item Never haphazardly drop an observation.
 	\item All calculations in a report \textbf{must} have a code footprint.
@@ -92,18 +93,17 @@ if  `"`c(username)'"' !=`"dhoepfner"' preamble, ///
 \end{lstlisting}
 
 \begin{itemize}
-
 	\item To the extent possible, the methodological lead or primary analyst should enumerate QA steps that should be performed at different waypoints throughout a project workflow.
 \end{itemize}
 
 \subsection{Transferrability}
 \begin{itemize}
 	\item Code should be transferable across projects and across individuals. That is, if one analyst left tomorrow, another one should be able to pick up her code from a given project and use it.
-	\item Be sure to annotate any program or package dependencies in the preamble of your code. In \texttt{R}, this means loading all packages used in the preamble.
+	\item Be sure to annotate any program or package dependencies in the preamble of your code. In \faRProject, this means loading all packages used in the preamble.
 	\item Annotate your code richly, throughout each section, so that a future analyst (perhaps you!) can easily understand what was done (e.g., the workflow, processes), and why. Remember that what is apparent to you while you are in the middle of a project may not be apparent to a future analyst (or your future self!).
-	\item If one analyst develops code for preparing files for a project, another analyst should be able to use this code for similar projects and problems, or even borrow components of it for similar procedures for different projects. Clearly structuring and annotating your code will facilitate this type of sharing.
+	\item If one analyst develops code for preparing files for a project, another analyst should be able to use this code for similar projects and problems, or even borrow components of it for similar procedures for different projects. Clearly structuring and annotating your code will facilitate this type of sharing.\footnote{Code modularization is one approach to fulfilling this objective. By code modularization, we mean developing \texttt{.ado} packages or \faRProject functions that can be deployed across multiple projects, or even across multiple sub-units within a larger project (e.g., repetitive cleaning procedures across different school districts.) An incomplete inventory of \texttt{.ado}'s developed by colleagues and collaboraties is provided in the last section of this document. For a more current list of packages available to the USC team, contact Marshall Garland.}
 	\item For multi-year projects, include the date (with year) with the comment so future analysts can see which comments are most recent.
-	\item In \texttt{R} (or any statistical program), never \texttt{setwd} to a directory on your local machine.\footnote{In \texttt{RStudio}, it is better to maximize the Project functionality to set working directories, or use the package \href{https://here.r-lib.org/}{\texttt{here}}. Jenny Bryan has an informative encomium about the \texttt{here} package...\href{https://github.com/jennybc/here_here}{here}. The reasons she provides for \textbf{never} setting your working directory in a script is a universal principle that applies to all programming languages.}.
+	\item In \faRProject (or any statistical program), never \texttt{setwd} to a directory on your local machine.\footnote{In \texttt{RStudio}, it is better to maximize the Project functionality to set working directories, or use the package \href{https://here.r-lib.org/}{\texttt{here}}. Jenny Bryan has an informative encomium about the \texttt{here} package...\href{https://github.com/jennybc/here_here}{here}. The reasons she provides for \textbf{never} setting your working directory in a script is a universal principle that applies to all programming languages.}.
 \end{itemize}
 
 \subsection{Accessibility}
@@ -113,6 +113,7 @@ if  `"`c(username)'"' !=`"dhoepfner"' preamble, ///
 	\item Sections of code should be clearly demarcated, such as ``begin cleaning file X'',``begin cleaning file Y'', ``merging Y and X''.
 	\item Use informative names for local and global macros and variables, even if temporary (unless created and deleted within a few lines of code).
 	\item If any sort of cleaning occurs outside of syntax, for example using an excel sheet to organize variable names across files, annotate that process in the script extensively.
+	\item Integrate the \href{https://en.wikipedia.org/wiki/Literate\_programming}{Knuthian literate programming paradigm} when writing code. That is, adorn your code, particularly for complicated procedures, with non-jargony, natural language that can be understood by non-experts. This is important for replicability, since analysts who are more proficient in a different programming language can translate natural language instructions into a procedure using their primary programming langugae.
 \end{itemize}
 
 \section{Expectations and Guiding Principles} \label{sec:expectations}
@@ -136,25 +137,25 @@ if  `"`c(username)'"' !=`"dhoepfner"' preamble, ///
 	\begin{itemize}
 		\item Ideally, this will be annotated, i.e., *Table 2 crosstab.
 	\end{itemize}
-\item For analysts who use \texttt{Stata}, we strongly recommend you use the Gibson \texttt{preamble} command. The front--matter defines global path macros that will facilitate replication and quality assurance inspections.
+\item For analysts who use \texttt{Stata}, we strongly recommend you use the \texttt{preamble} command. The front--matter defines global path macros that will facilitate replication and quality assurance inspections.
 \item In general, syntax or .do files and raw source files should be stored on a network drive (e.g., the \url{S:/}drive) to ensure they are recoverable in case of some type of failure. If you need to have them accessible locally, please ensure they are backed-up to a network drive as soon as you are able.
 \end{itemize}
 
 \section{Naming folders and files} \label{sec:folders}
-When possible, (particularly for data and code stored on the \url{S:/shared/data/} drive on Azure) please name folders and files in a systematic way that is free of non-alphanumeric characters (save for underscore delimiters). Please do not include spaces, parentheses, or other symbols in folder or filenames as these can cause programming scripts to choke. Typical convention is to use snake\textunderscore{}case rather than CamelCase, though this has varied by researcher (and, consequently, project). Once a project folder name has been set, it should almost never be changed, since doing so will break all code referring to it.
+When possible, (particularly for data and code stored on a shared drive) please name folders and files in a systematic way that is free of non-alphanumeric characters (save for underscore delimiters). Please do not include spaces, parentheses, or other symbols in folder or filenames as these can cause programming scripts to choke. Typical convention is to use snake\textunderscore{}case rather than CamelCase, though this has varied by researcher (and, consequently, project). Once a project folder name has been set, it should almost never be changed, since doing so will break all code referring to it.
 
 \subsection{Folder Naming and Structure}
 The project folder should include some distinctive moniker including the project client or title (like AISD\_student\_survey) without project or school year included in the title. Project directories should be clearly and intuitively structured and labeled. Typically, syntax files will be in a folder separate from data files, and raw source files will be in a separate sub-folder from final analytic files.\footnote{Keep in mind that there limits to folder path lengths (260 characters on our \textsf{MS Windows} server). This is affected by both file name length and the number of sub-folders the file is nested in; so, please keep file nesting to a minimum where possible to avoid hitting this limit.}
 
 \subsubsection{Common sub-folders}
-We generally use the same sub-folder or sub-directory structure in each project folder. We separate information into folders like \textbf{raw}, \textbf{converted}, \textbf{processed}, and \textbf{final} data as well as \textbf{syntax}, \textbf{output}, \textbf{results} (e.g. from models), \textbf{temp} (for tempfiles), \textbf{archive} (for archived or deprecated code), and other associated files like \textbf{latex} (for \LaTeX{} files) or \textbf{\texttt{HTML}} If futher organization of files is useful, nest those distinctions within these base folders. For example, if a large project has district administrative data, observation data, afterschool data, and survey data create those folders within raw, converted, processed, and so forth.
+We generally use the same sub-folder or sub-directory structure in each project folder. We separate information into folders like \textbf{raw}, \textbf{converted}, \textbf{processed}, and \textbf{final} data as well as \textbf{syntax}, \textbf{output}, \textbf{results} (e.g. from models), \textbf{temp} (for tempfiles), \textbf{archive} (for archived or deprecated code), and other associated files like \textbf{latex} (for \LaTeX{} files) or \textbf{\texttt{HTML}} If futher organization of files is useful, nest those distinctions within these base folders. For example, if a large project has district administrative data, observation data, afterschool data, and survey data create those folders within raw, converted, processed, and so forth.\footnote{The \texttt{preamble.ado} will automate this process for your.}
 \begin{itemize}
 	\item\textbf{raw}: Unaltered files as received from the client or other source.
 	\item\textbf{converted}: Raw files converted to format used by analyst's language.
 	\item\textbf{processed}: Converted files which are partially processed (variable and value labels for example), but need more work before they are final/analytic (need to be merged or combined across years).
 	\item\textbf{final}: Analytic dataset which is used for descriptive tables, analysis, figures and other results.
 	\item\textbf{output}: Tables and other files which will not be used in reporting, such as tables describing data issues for the client. Files output at one stage to be imported at another(which are not data files). Examples: a list of students missing test data, an excel sheet you export to organize variable renames and re-import.
-	\item\textbf{output/logs/}: Store log files from \texttt{Stata}/\texttt{R} sessions. Logs should always be saved with the date in the name so that the point where errors may have been introduced can be detected.
+	\item\textbf{output/logs/}: Store log files from \texttt{Stata}/\faRProject sessions. Logs should always be saved with the date in the name so that the point where errors may have been introduced can be detected.
 	\item\textbf{results}: Tables, figures, and other output that will or could be used in reporting.
 	\item\textbf{syntax}: Script files.
 	\item\textbf{latex/html/temp}: Use as needed to store \LaTeX{} and HTML files or other atypical files needed or produced.
@@ -197,7 +198,8 @@ In general, filenames should:
 	\item use camel case ({\it{e.g.}}, \textbf{F}ile\textbf{N}ame\textbf{O}ne) to compress file name length where underscores are not needed or all lowercase. Do not use arbitrary case (\textit{e.g.},  staffSTUDENT\_YR2012, myFileNAME\_for2013\_vER2.txt)
 	\item be constructed to encourage looping over file names (that is, consistently named with sequenced elements). Example:  surveyresponses\_school1\_2014\_grade8.dta.   Underscores can help with looping over sub-elements of a filename!
 	\item If you must use versioning, be consistent in version labeling and meaning.  File versions 1 and 2 could be suffixed with ``V1" and ``V2" but if you make a dataset for \texttt{Stata} version 12 or 14 make this distinct (\textit{e.g,}. school1\_2014\_survey\_stata\_ver14.dta).
-	\item For analysis files, particularly when working collaboratively, it can be helpful to include a \textbf{BornDate} variable with the date the file was created. In case of inconsistencies between versions, this can help diagnose the reasons for the discrepancies since different users can refer to this variable and determine whether they are using a deprecated file. 
+	\item For analysis files, particularly when working collaboratively, it can be helpful to include a \textbf{BornDate} variable with the date the file was created. In case of inconsistencies between versions, this can help diagnose the reasons for the discrepancies since different users can refer to this variable and determine whether they are using a deprecated file.
+	\item To minimize the risk that the incorrect file is used to conduct analyses and generate output, the primary analysis file folder should be uncluttered with obsolete or extraneous files. Our team has developed packages\footnote{For instance, \texttt{file\_archive.ado} checks a folder to see if a same-named file exists in the destination folder and, if it does, migrates it to a subfolder and affixes the current date to the file name.} to minimize the risk that this occurs.\footnote{An example where the analysis file folder may have multiple non-superfluous files is when the project requires analysis at multiple levels of analysis (e.g., at the school and the student level).}
 \end{itemize}
 \begin{lstlisting}[language=Stata, numbers=none]
 //At the end of a .do file, create a new variable containing the last saved date/time of the file.
@@ -222,7 +224,7 @@ For example:
 \end{itemize}
 \linespread{1.25}
 
-For surplus syntax files that don't neatly fit into the analysis process/sequence, use a distinct (or large) number to set it apart (like 99).  Examples include files containing meta code (like labeling), ado-files used to process procedures across multiple syntax files in this sub-directory , or scratchpad files of code you don't want to erase/lose.
+For surplus syntax files that don't neatly fit into the analysis process/sequence, use a distinct (or large) number to set it apart (like 99).  Examples include files containing meta code (like labeling), ado-files used to process procedures across multiple syntax files in this sub-directory, or scratchpad files of code you don't want to erase/lose.
 
 Continuing the previous example:
 
@@ -244,9 +246,9 @@ Continuing the previous example:
 \linespread{1.25}
 
 \section{Naming variables, macros, and other characteristics in \texttt{Stata} datasets} \label{sec:variables}
-Variables (columns), macros, and characteristics names should follow the constraints and conditions from \texttt{Stata} and \texttt{R}. Even in Excel and other program (where these rules don't apply), if we can enter variable names with the same rules that apply in \texttt{Stata} and \texttt{R}, then transferring this data cleanly will help reduce data cleaning effort. \\
+Variables (columns), macros, and characteristics names should follow the constraints and conditions from \texttt{Stata} and \faRProject. Even in Excel and other program (where these rules don't apply), if we can enter variable names with the same rules that apply in \texttt{Stata} and \faRProject, then transferring this data cleanly will help reduce data cleaning effort. \\
 
-Rules which meet \texttt{Stata} and \texttt{R} standards:  variables (and macros) can contain up to \textsf{32} characters. A variable name may contain only the digits 0 to 9, upper or lower case English alpha characters (\texttt{A to Z}), and underscores; and the first character cannot be a number or an underscore.\footnote{Stata variables can be started with an underscore without issue, locals in Stata can, but should not start with an underscore, globals cannot as Stata uses the underscore internally to differentiate between locals and globals.} Except where necessary, such as folder paths, years, and macros that need to persist when other script files are called from a main script, locals should be used rather than globals. \\
+Rules which meet \texttt{Stata} and \faRProject standards:  variables (and macros) can contain up to \textsf{32} characters. A variable name may contain only the digits 0 to 9, upper or lower case English alpha characters (\texttt{A to Z}), and underscores; and the first character cannot be a number or an underscore.\footnote{Stata variables can be started with an underscore without issue, locals in Stata can, but should not start with an underscore, globals cannot as Stata uses the underscore internally to differentiate between locals and globals.} Except where necessary, such as folder paths, years, and macros that need to persist when other script files are called from a main script, locals should be used rather than globals. \\
 
 We advise creating \textsf{loopable}, consistent variable names that also convey meaning when possible (though you have -variable labels- and characteristics (-char-) to store that information. If the variable attributes are too long to easily store in a variable name then use short abbreviations (that hopefully capture some attribute with loopable structure) and rely on the labels and codebook to decipher meaning. \\
 
@@ -304,7 +306,7 @@ foreach t in `teachers' { //Teacher
 } //End of teacher
 \end{lstlisting}
 
-Procedures and lists should be unified. This is to say, if a similar non-standard procedure is going to be executed multiple times, it should be done in a loop, or using a program/function written at the top of the syntax file.\footnote{Standard repetitive procedures should be turned into an .ado file (in \texttt{Stata}, or package library in \texttt{R})} Lists of variables which will be used repeatedly should be defined once.\footnote{\texttt{Stata 16} introduced a new suite of commands for managing variable lists called \texttt{vl}. A good summary of this functionality is available \href{https://errickson.net/stata-16/02-vl.html}{here}. These commands are useful for compiling lists of variables that are related in some way (e.g., demographic characteristics or test scores), and sorting them into globals based on their level of measurement (e.g., binary, continuous). These globals can then be used in subsequent operations, and can be manipulated using \texttt{Stata}'s factor variables functions.} Parameters that may be adjusted within a loop that are used several times should be defined as locals, for example, colors, text sizes, and spacing adjustments in a loop producing a figure composed of multiple -twoway- commands.
+Procedures and lists should be unified. This is to say, if a similar non-standard procedure is going to be executed multiple times, it should be done in a loop, or using a program/function written at the top of the syntax file.\footnote{Standard repetitive procedures should be turned into an .ado file (in \texttt{Stata}, or package library in \faRProject)} Lists of variables which will be used repeatedly should be defined once.\footnote{\texttt{Stata 16} introduced a new suite of commands for managing variable lists called \texttt{vl}. A good summary of this functionality is available \href{https://errickson.net/stata-16/02-vl.html}{here}. These commands are useful for compiling lists of variables that are related in some way (e.g., demographic characteristics or test scores), and sorting them into globals based on their level of measurement (e.g., binary, continuous). These globals can then be used in subsequent operations, and can be manipulated using \texttt{Stata}'s factor variables functions.} Parameters that may be adjusted within a loop that are used several times should be defined as locals, for example, colors, text sizes, and spacing adjustments in a loop producing a figure composed of multiple -twoway- commands.
 
 \section{USC-CARE's computing environment and tools} \label{sec:environment}
 
