@@ -5,7 +5,7 @@ The purpose of this document is to outline and codify some general principles fo
 
 This document is inspired, and borrows heavily, from similar guides for applied researchers, including Matthew Gentzkow and Jesse Shapiro's [Code and Data for the Social Sciences: A Practicioner's Guide](https://web.stanford.edu/~gentzkow/research/CodeAndData.pdf) and Julian Reif's [Stata Coding Guide](https://julianreif.com/guide/).
 
-The document reflects the contributions of current and past Gibson researchers, including Danial Hoepfner, Eric Booth, David Osman, Marshall Garland, and Jill Carle.
+The document reflects the contributions of current and past colleagues at [Gibson Consulting Group](https://gibsonconsult.com/) and USC, including Danial Hoepfner, Eric Booth, David Osman, Marshall Garland, Jill Carle, Mitchell Kilborn, Gracie Petty, and Daniel Silver.
 
 ## Location
 The document is stored and maintained in a [Git repository](https://github.com/usc-care/principles/blob/main/tex/analyst-manifesto.pdf). The file is only accessible to invited members of USC-CARE.
